@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>メイラード反応を物理の目で見る — Eatropy</title>
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&family=Noto+Serif+JP:wght@500;600&family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">
@@ -25,7 +26,7 @@
 </header>
 
 <section class="article-header">
-  <div class="wrap">
+  <div class="wrap narrow">
     <div class="meta">Chemistry &amp; Heat · 2026.10.19</div>
     <h1>メイラード反応を物理の目で見る</h1>
     <p class="subtitle">パンの焼き色、肉の焦げ目 ― 「美味しそうな色」はエネルギーの足跡。</p>
@@ -33,7 +34,7 @@
 </section>
 
 <article class="content">
-  <div class="wrap">
+  <div class="wrap narrow">
 
     <p>肉を強火で焼いたときに立つ香りと、表面につく茶色い焼き色。これはメイラード反応と呼ばれる、アミノ酸と糖が加熱によって結びつく化学反応の結果だ。料理としては当たり前の現象だが、物理の視点で見ると、これは典型的な「活性化エネルギーを超える」反応でもある。</p>
 
@@ -43,6 +44,30 @@
 
     <div class="callout">
       アレニウスの式: k = A·exp(−E<sub>a</sub> / RT)。温度 T が上がるほど、反応速度定数 k は指数関数的に大きくなる。これが「強火にすると一気に焼き色がつく」理由だ。
+    </div>
+
+    <div class="diagram">
+      <svg viewBox="0 0 600 260" xmlns="http://www.w3.org/2000/svg">
+        <line x1="60" y1="220" x2="560" y2="220" style="stroke:var(--color-line)" stroke-width="2"/>
+        <line x1="60" y1="20" x2="60" y2="220" style="stroke:var(--color-line)" stroke-width="2"/>
+
+        <line x1="435" y1="20" x2="435" y2="220" style="stroke:var(--color-ink-soft)" stroke-width="1.5" stroke-dasharray="4 4"/>
+        <text x="440" y="34" font-size="13" style="fill:var(--color-ink-soft)">140℃ 目安</text>
+
+        <path d="M60,215 C200,214 350,205 435,150 C480,120 520,70 560,25" fill="none" style="stroke:var(--color-accent)" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="435" cy="150" r="4" style="fill:var(--color-accent)"/>
+
+        <text x="55" y="238" font-size="12" style="fill:var(--color-ink-soft)">20</text>
+        <text x="175" y="238" font-size="12" style="fill:var(--color-ink-soft)">60</text>
+        <text x="295" y="238" font-size="12" style="fill:var(--color-ink-soft)">100</text>
+        <text x="420" y="238" font-size="12" style="fill:var(--color-ink-soft)">140</text>
+        <text x="548" y="238" font-size="12" style="fill:var(--color-ink-soft)">180</text>
+        <text x="470" y="252" font-size="12" style="fill:var(--color-ink-soft)">温度(℃)</text>
+
+        <text x="18" y="24" font-size="12" style="fill:var(--color-ink-soft)">速度</text>
+        <text x="26" y="38" font-size="12" style="fill:var(--color-ink-soft)">k</text>
+      </svg>
+      <div class="caption">アレニウスの式が描く曲線:温度が上がるほど反応速度は指数関数的に増え、140℃付近から焼き色が一気に進む。</div>
     </div>
 
     <h2>130℃という目安</h2>

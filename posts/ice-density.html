@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>氷はなぜ水に浮くのか — Eatropy</title>
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&family=Noto+Serif+JP:wght@500;600&family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">
@@ -25,7 +26,7 @@
 </header>
 
 <section class="article-header">
-  <div class="wrap">
+  <div class="wrap narrow">
     <div class="meta">Thermodynamics · 2026.10.19</div>
     <h1>氷はなぜ水に浮くのか — 水素結合と密度の物理</h1>
     <p class="subtitle">ロックアイスがグラスの中で浮いているのは、当たり前ではない。</p>
@@ -33,7 +34,7 @@
 </section>
 
 <article class="content">
-  <div class="wrap">
+  <div class="wrap narrow">
 
     <p>ウイスキーのグラスに入れた氷は、当然のように水面に浮く。あまりに日常的な光景だが、これは物理的にはかなり珍しい現象だ。ほとんどの物質は、固体になると分子が密に詰まり、液体よりも密度が高くなる。つまり「固体は沈む」のが普通であり、水はその例外にあたる。</p>
 
@@ -43,6 +44,28 @@
 
     <div class="callout">
       密度 ρ = 質量 m / 体積 V。質量が同じまま体積が増えれば、密度は下がる。氷の密度は約0.917 g/cm³、水は約1.000 g/cm³ ― このわずかな差が、氷を浮かせている。
+    </div>
+
+    <div class="diagram">
+      <svg viewBox="0 0 600 260" xmlns="http://www.w3.org/2000/svg">
+        <rect x="50" y="30" width="160" height="200" rx="6" fill="none" style="stroke:var(--color-ink-soft)" stroke-width="2"/>
+        <rect x="52" y="92" width="156" height="136" style="fill:var(--color-accent-soft)" opacity="0.35"/>
+        <line x1="50" y1="92" x2="212" y2="92" style="stroke:var(--color-accent)" stroke-width="1.5" stroke-dasharray="4 4"/>
+        <text x="216" y="96" font-size="12" style="fill:var(--color-ink-soft)">水面</text>
+        <rect x="95" y="84" width="70" height="70" rx="4" style="fill:var(--color-card); stroke:var(--color-accent)" stroke-width="2.5"/>
+        <text x="130" y="124" font-size="13" text-anchor="middle" style="fill:var(--color-ink-soft)">氷</text>
+
+        <text x="330" y="40" font-size="13" style="fill:var(--color-ink-soft)">密度の比較(g/cm³)</text>
+
+        <text x="330" y="68" font-size="13" style="fill:var(--color-ink)">氷</text>
+        <rect x="330" y="72" width="183" height="26" rx="3" style="fill:var(--color-accent)"/>
+        <text x="520" y="90" font-size="13" style="fill:var(--color-ink-soft)">0.917</text>
+
+        <text x="330" y="128" font-size="13" style="fill:var(--color-ink)">水</text>
+        <rect x="330" y="132" width="200" height="26" rx="3" style="fill:var(--color-accent-soft)"/>
+        <text x="538" y="150" font-size="13" style="fill:var(--color-ink-soft)">1.000</text>
+      </svg>
+      <div class="caption">氷はおよそ9割が水面下に沈んだ状態で浮く(密度比 0.917 : 1.000)。</div>
     </div>
 
     <h2>浮力という観点から見る</h2>
