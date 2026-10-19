@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>低温調理と熱伝導方程式 — Eatropy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&family=Noto+Serif+JP:wght@500;600&family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <div>
+      <div class="logo"><a href="../index.html" style="color:inherit">Eatr<em>o</em>py</a></div>
+      <div class="tagline">食と科学のブログ</div>
+    </div>
+    <nav class="site-nav">
+      <a href="../index.html">Home</a>
+      <a href="../about.html">About</a>
+    </nav>
+  </div>
+</header>
+
+<section class="article-header">
+  <div class="wrap">
+    <div class="meta">Heat Transfer · 2026.10.19</div>
+    <h1>低温調理と熱伝導方程式</h1>
+    <p class="subtitle">なぜ低温調理は「放っておいても失敗しにくい」のか。</p>
+  </div>
+</section>
+
+<article class="content">
+  <div class="wrap">
+
+    <p>低温調理器で肉を63℃のお湯に1時間沈めておくだけで、驚くほど柔らかく、しっとりとした仕上がりになる。フライパンで焼く調理に比べて、低温調理が「失敗しにくい」と言われるのには、熱の伝わり方そのものに理由がある。</p>
+
+    <h2>肉の中心温度は、環境の温度に漸近する</h2>
+    <p>肉の内部の温度変化は、熱伝導方程式(フーリエの法則を時間方向に拡張したもの)に従う。簡単なモデルでは、肉の中心温度 T(t) は、周囲の温度 T<sub>env</sub> に向かって指数関数的に近づいていく。</p>
+
+    <div class="callout">
+      T(t) = T<sub>env</sub> − (T<sub>env</sub> − T<sub>0</sub>)·exp(−t / τ)。τ は肉の熱拡散率と大きさで決まる時定数。時間が十分に経てば、中心温度は周囲の温度 T<sub>env</sub> に限りなく近づき、それを超えることはない。
+    </div>
+
+    <h2>「超えない」という性質が安全装置になる</h2>
+    <p>フライパンや直火の調理では、表面は数百℃に達する一方、中心部はまだ生のまま、という温度のムラが生まれやすい。これは加熱源の温度がそもそも高すぎるために、時間の管理がそのまま仕上がりの精度に直結してしまうからだ。</p>
+    <p>一方、低温調理ではお湯の温度 T<sub>env</sub> 自体を、目標とする仕上がり温度(例えばミディアムレアなら63℃前後)に設定する。中心温度は原理的にこの T<sub>env</sub> を超えて上がることがないため、「少し長く沈けすぎた」程度の時間のブレが、仕上がりに大きな影響を与えにくい。加熱時間の許容範囲が広いのは、方程式の構造そのものに由来している。</p>
+
+    <blockquote>低温調理の「失敗しにくさ」は、腕の良さではなく、指数関数が持つ漸近的な振る舞いのおかげだ。</blockquote>
+
+    <p>温度計を肉に刺さなくても、方程式の形さえ分かっていれば、低温調理器の設定温度が仕上がりの上限を決めていることが見えてくる。キッチンタイマーよりも、τ の大きさ(肉の厚みと熱拡散率)を気にする方が、実は本質的なのかもしれない。</p>
+
+    <a class="back-link" href="../index.html">&larr; Home に戻る</a>
+  </div>
+</article>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <span>&copy; 2026 Eatropy</span>
+    <span>Physics × Food</span>
+  </div>
+</footer>
+
+</body>
+</html>
