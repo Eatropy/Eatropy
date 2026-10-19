@@ -1,13 +1,13 @@
 /* Eatropy — base styles */
 
 :root {
-  --color-bg: #faf6ef;
-  --color-bg-alt: #f1ead9;
-  --color-ink: #211c16;
-  --color-ink-soft: #5a5247;
-  --color-accent: #c1552c;
-  --color-accent-soft: #e8ad8a;
-  --color-line: #ded3bd;
+  --color-bg: #f7f3ec;
+  --color-bg-alt: #efe8da;
+  --color-ink: #161514;
+  --color-ink-soft: #655f54;
+  --color-accent: #7a2430;
+  --color-accent-soft: #d9b199;
+  --color-line: #e0d8c6;
   --color-card: #ffffff;
   --font-serif: "Source Serif 4", "Noto Serif JP", Georgia, serif;
   --font-sans: "Inter", "Noto Sans JP", -apple-system, sans-serif;
@@ -17,26 +17,26 @@
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --color-bg: #15130f;
-    --color-bg-alt: #1d1a14;
-    --color-ink: #efe8da;
-    --color-ink-soft: #b3a890;
-    --color-accent: #e07a46;
-    --color-accent-soft: #6b4530;
-    --color-line: #332d23;
-    --color-card: #1d1a14;
+    --color-bg: #15120f;
+    --color-bg-alt: #1d1915;
+    --color-ink: #f0e9db;
+    --color-ink-soft: #b0a593;
+    --color-accent: #c9707c;
+    --color-accent-soft: #5a2832;
+    --color-line: #342e26;
+    --color-card: #1d1915;
   }
 }
 
 :root[data-theme="dark"] {
-  --color-bg: #15130f;
-  --color-bg-alt: #1d1a14;
-  --color-ink: #efe8da;
-  --color-ink-soft: #b3a890;
-  --color-accent: #e07a46;
-  --color-accent-soft: #6b4530;
-  --color-line: #332d23;
-  --color-card: #1d1a14;
+  --color-bg: #15120f;
+  --color-bg-alt: #1d1915;
+  --color-ink: #f0e9db;
+  --color-ink-soft: #b0a593;
+  --color-accent: #c9707c;
+  --color-accent-soft: #5a2832;
+  --color-line: #342e26;
+  --color-card: #1d1915;
 }
 
 * { box-sizing: border-box; }
