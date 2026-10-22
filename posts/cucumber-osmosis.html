@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>キュウリの塩もみと浸透圧 — Eatropy</title>
+<meta name="description" content="なぜキュウリに塩を振ると水が出るのか。半透膜を挟んだ濃度差がつくる浸透圧の物理で、塩もみの仕組みを説明します。">
+<link rel="canonical" href="https://eatropy.github.io/Eatropy/posts/cucumber-osmosis.html">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://eatropy.github.io/Eatropy/posts/cucumber-osmosis.html">
+<meta property="og:site_name" content="Eatropy">
+<meta property="og:title" content="キュウリの塩もみと浸透圧 — Eatropy">
+<meta property="og:description" content="なぜキュウリに塩を振ると水が出るのか。半透膜を挟んだ濃度差がつくる浸透圧の物理で、塩もみの仕組みを説明します。">
+<meta property="og:image" content="https://eatropy.github.io/Eatropy/og-image.png">
+<meta property="og:locale" content="ja_JP">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="キュウリの塩もみと浸透圧 — Eatropy">
+<meta name="twitter:description" content="なぜキュウリに塩を振ると水が出るのか。半透膜を挟んだ濃度差がつくる浸透圧の物理で、塩もみの仕組みを説明します。">
+<meta name="twitter:image" content="https://eatropy.github.io/Eatropy/og-image.png">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&family=Noto+Serif+JP:wght@500;600&family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <div>
+      <div class="logo"><a href="../index.html" style="color:inherit">Eatr<em>o</em>py</a></div>
+    </div>
+    <nav class="site-nav">
+      <a href="../index.html">Home</a>
+      <a href="../about.html">About</a>
+    </nav>
+  </div>
+</header>
+
+<section class="article-header">
+  <div class="wrap narrow">
+    <div class="meta">Osmotic Pressure · 2026.10.22</div>
+    <h1>キュウリの塩もみと浸透圧</h1>
+    <p class="subtitle">下ごしらえの「あるある」の裏にある、半透膜と濃度差の科学。</p>
+  </div>
+</section>
+
+<article class="content">
+  <div class="wrap narrow">
+
+    <p>薄切りにしたキュウリに塩を振って数分置いておくと、表面にじんわりと水の粒が浮かんでくる。和え物やサラダの下ごしらえで誰もがやったことのあるこの作業は、ただ水分を絞り出しているだけのようでいて、実は細胞膜を挟んだ物理現象そのものだ。</p>
+
+    <h2>細胞膜は「半透膜」である</h2>
+    <p>キュウリの細胞を包む膜は、水分子は比較的自由に通すが、糖やイオンなど大きめの溶質分子は通しにくい、半透膜という性質を持っている。この「水だけは行き来できるが、溶けているものは行き来しにくい」という非対称さが、これから起きることの前提になる。</p>
+
+    <div class="callout">
+      浸透圧 π = cRT(ファントホッフの式)。c は膜を挟んだ溶質のモル濃度差、R は気体定数、T は絶対温度。濃度差が大きいほど、水を引き込もうとする圧力は強くなる。
+    </div>
+
+    <h2>塩が「濃度差」をつくり出す</h2>
+    <p>キュウリの細胞内部は、もともと水に近い薄い濃度の溶液で満たされている。そこに塩を振ると、表面の濃度が一気に跳ね上がり、細胞内と表面のあいだに大きな濃度差が生まれる。半透膜は水を自由に通すので、水は「薄い方から濃い方へ」── つまり細胞の中から外へ向かって移動し、濃度差を埋めようとする。これが浸透であり、表面ににじむ水滴の正体だ。</p>
+
+    <div class="diagram">
+      <svg viewBox="0 0 600 260" xmlns="http://www.w3.org/2000/svg">
+        <rect x="50" y="30" width="220" height="190" rx="6" fill="none" style="stroke:var(--color-ink-soft)" stroke-width="2"/>
+        <rect x="330" y="30" width="220" height="190" rx="6" style="fill:var(--color-bg-alt); stroke:var(--color-ink-soft)" stroke-width="2"/>
+
+        <text x="160" y="50" font-size="13" text-anchor="middle" style="fill:var(--color-ink-soft)">細胞内(低濃度)</text>
+        <text x="440" y="50" font-size="13" text-anchor="middle" style="fill:var(--color-ink-soft)">表面(塩・高濃度)</text>
+
+        <g style="fill:var(--color-accent-soft)">
+          <circle cx="100" cy="110" r="4"/>
+          <circle cx="170" cy="150" r="4"/>
+          <circle cx="130" cy="185" r="4"/>
+          <circle cx="220" cy="100" r="4"/>
+        </g>
+
+        <g style="fill:var(--color-accent)">
+          <circle cx="360" cy="80" r="4"/>
+          <circle cx="390" cy="110" r="4"/>
+          <circle cx="420" cy="75" r="4"/>
+          <circle cx="450" cy="100" r="4"/>
+          <circle cx="480" cy="80" r="4"/>
+          <circle cx="510" cy="110" r="4"/>
+          <circle cx="370" cy="140" r="4"/>
+          <circle cx="410" cy="150" r="4"/>
+          <circle cx="450" cy="140" r="4"/>
+          <circle cx="490" cy="150" r="4"/>
+          <circle cx="360" cy="180" r="4"/>
+          <circle cx="400" cy="195" r="4"/>
+          <circle cx="440" cy="185" r="4"/>
+          <circle cx="480" cy="195" r="4"/>
+        </g>
+
+        <line x1="300" y1="14" x2="300" y2="236" style="stroke:var(--color-ink)" stroke-width="1.5" stroke-dasharray="3 5"/>
+        <text x="300" y="10" font-size="12" text-anchor="middle" style="fill:var(--color-ink-soft)">半透膜</text>
+
+        <g style="stroke:var(--color-ink)" stroke-width="2.5">
+          <line x1="275" y1="90" x2="318" y2="90"/>
+          <line x1="275" y1="140" x2="318" y2="140"/>
+          <line x1="275" y1="190" x2="318" y2="190"/>
+        </g>
+        <g style="fill:var(--color-ink)">
+          <polygon points="318,84 330,90 318,96"/>
+          <polygon points="318,134 330,140 318,146"/>
+          <polygon points="318,184 330,190 318,196"/>
+        </g>
+        <text x="297" y="70" font-size="11" text-anchor="middle" style="fill:var(--color-ink-soft)">H₂O</text>
+
+        <circle cx="304" cy="160" r="4.5" style="fill:var(--color-accent)"/>
+        <g style="stroke:var(--color-bg-alt)" stroke-width="1.5">
+          <line x1="300" y1="156" x2="308" y2="164"/>
+          <line x1="308" y1="156" x2="300" y2="164"/>
+        </g>
+      </svg>
+      <div class="caption">半透膜を挟むと、水は濃度の低い側(細胞内)から高い側(塩をふった表面)へ移動する。溶質は膜を通れない。</div>
+    </div>
+
+    <h2>下ごしらえとしての合理性</h2>
+    <p>この性質は、料理の現場では「水分を抜いて味をぼやけさせない」ための操作として使われている。塩もみしたキュウリや、漬物、酢の物の下ごしらえは、すべてこの浸透圧を利用して余分な水分を先に追い出し、調味料の濃度が薄まるのを防いでいる。しなびた野菜を真水に浸すと再びパリッとするのも、同じ原理が逆方向に働いているだけだ──周囲が薄い真水になれば、今度は水が細胞の中へと戻っていく。</p>
+
+    <blockquote>塩を振るという一見乱暴な仕草は、濃度差を使って水を引き出す、計算された物理操作だ。</blockquote>
+
+    <p>濃度の高い方と低い方が均されていくこの動きは、見方を変えれば、偏りがならされ均一に近づこうとする自然な流れでもある。キュウリの表面ににじむ一滴の水は、濃度差という小さな「偏り」が解消されていく、ごくありふれた物理の現場なのだ。</p>
+
+    <a class="back-link" href="../index.html">&larr; Home に戻る</a>
+  </div>
+</article>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <span>&copy; 2026 Eatropy</span>
+  </div>
+</footer>
+
+</body>
+</html>
