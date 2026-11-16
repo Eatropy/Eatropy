@@ -4,23 +4,26 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>卵の急冷と殻剥がしの物理 — Eatropy</title>
-<meta name="description" content="茹でたての卵は剥きにくいのに、氷水で急冷すると殻がつるんと剥ける。熱膨張のタイムラグと気室の収縮で、そのしくみを説明します。">
+<meta name="description" content="茹でたての卵は剥きにくいのに、氷水で急冷すると殻がつるんと剥ける。冷える速さの「厚さの2乗」則と、殻と白身の熱膨張率の差から、そのしくみを導きます。">
 <link rel="canonical" href="https://eatropy.github.io/Eatropy/posts/egg-thermal-shock.html">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://eatropy.github.io/Eatropy/posts/egg-thermal-shock.html">
 <meta property="og:site_name" content="Eatropy">
 <meta property="og:title" content="卵の急冷と殻剥がしの物理 — Eatropy">
-<meta property="og:description" content="茹でたての卵は剥きにくいのに、氷水で急冷すると殻がつるんと剥ける。熱膨張のタイムラグと気室の収縮で、そのしくみを説明します。">
+<meta property="og:description" content="茹でたての卵は剥きにくいのに、氷水で急冷すると殻がつるんと剥ける。冷える速さの「厚さの2乗」則と、殻と白身の熱膨張率の差から、そのしくみを導きます。">
 <meta property="og:image" content="https://eatropy.github.io/Eatropy/og-image.png">
 <meta property="og:locale" content="ja_JP">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="卵の急冷と殻剥がしの物理 — Eatropy">
-<meta name="twitter:description" content="茹でたての卵は剥きにくいのに、氷水で急冷すると殻がつるんと剥ける。熱膨張のタイムラグと気室の収縮で、そのしくみを説明します。">
+<meta name="twitter:description" content="茹でたての卵は剥きにくいのに、氷水で急冷すると殻がつるんと剥ける。冷える速さの「厚さの2乗」則と、殻と白身の熱膨張率の差から、そのしくみを導きます。">
 <meta name="twitter:image" content="https://eatropy.github.io/Eatropy/og-image.png">
 <link rel="icon" href="../favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&family=Noto+Serif+JP:wght@500;600&family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'\\(',right:'\\)',display:false}]});"></script>
 <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
@@ -50,47 +53,182 @@
 
     <p>茹でたての卵をすぐに剥こうとすると、殻が白身にべったりとくっついて、表面がボロボロになってしまう。けれど茹で上がった直後に氷水へ放り込むと、同じ卵なのに殻がつるんと気持ちよく剥ける。この違いを生んでいるのは、剥き方のコツというより、急激な温度変化が引き起こす熱膨張の物理だ。</p>
 
-    <h2>殻と白身は、縮む速さが違う</h2>
-    <p>卵の殻は薄いセラミックのような層で、まわりの水温に合わせてほぼ瞬時に温度が変わる。一方、内部の白身はタンパク質と水を多く含む厚みのある塊で、熱が中心まで伝わる(あるいは抜ける)のに時間がかかる。氷水に入れた直後は、殻はすでに冷えて縮み始めているのに、白身の内部はまだ茹でた直後の熱を残したまま、という時間差が生まれる。</p>
+    <h2>殻はすぐ冷え、白身はなかなか冷えない</h2>
+    <p>卵の殻は厚さ 0.3〜0.4 mm ほどの薄い層で、氷水に入れるとほぼ一瞬でまわりの温度になる。一方、内部の白身と黄身は半径 2 cm ほどの塊で、熱が中心から抜けるまでに数分かかる。冷える速さには、およそ数千倍もの差がある。</p>
+
+    <h2>縮む量は、白身の方がずっと大きい</h2>
+    <p>もうひとつの違いは、冷えたときの<strong>縮み方</strong>だ。殻は炭酸カルシウムでできた硬い結晶の層で、温度が下がってもほとんど縮まない。一方、白身の約9割は水で、水は熱いときほど大きく膨らむ性質がある。95℃から氷水の温度まで冷やすと、白身の体積はおよそ 4% も縮むのに、殻は 0.2% も縮まない。</p>
+    <p>しかも白身は、殻に接している外側から先に冷えていく。中心がまだ熱くて大きいままなのに、殻のすぐ内側の白身だけが先に縮もうとする。その結果、縮みの「しわ寄せ」が殻と白身の境目に集中し、白身が殻(の内側の薄い膜)から引きはがされて、薄いすきまができる。</p>
 
     <div class="callout">
-      物体の収縮量は ΔL = α・L・ΔT で決まる。殻は薄いぶん冷えるのが速く、先に縮み始める。白身が数秒遅れて縮むこのタイムラグが、殻と白身のあいだにわずかなすきまを生む。
+      まとめると、急冷で剥きやすくなる理由は2つの「差」にある。<br>
+      ① 冷える速さの差 ── 薄い殻は一瞬、厚い白身は数分<br>
+      ② 縮む量の差 ── 水が主成分の白身は、硬い殻の 20 倍以上縮む
     </div>
 
     <div class="diagram">
-      <svg viewBox="0 0 600 260" xmlns="http://www.w3.org/2000/svg">
-        <text x="150" y="22" font-size="13" text-anchor="middle" style="fill:var(--color-ink-soft)">直後(熱いまま)</text>
-        <ellipse cx="150" cy="145" rx="85" ry="105" fill="none" style="stroke:var(--color-ink)" stroke-width="2.5"/>
-        <ellipse cx="150" cy="145" rx="79" ry="99" style="fill:var(--color-bg-alt)"/>
-        <circle cx="150" cy="58" r="14" style="fill:var(--color-card); stroke:var(--color-ink-soft)" stroke-width="1.5"/>
+      <svg viewBox="0 0 600 280" xmlns="http://www.w3.org/2000/svg">
+        <text x="150" y="20" font-size="13" text-anchor="middle" style="fill:var(--color-ink-soft)">茹でた直後(約95℃)</text>
+        <ellipse cx="150" cy="140" rx="85" ry="105" fill="none" style="stroke:var(--color-ink)" stroke-width="2.5"/>
+        <ellipse cx="150" cy="140" rx="81" ry="101" style="fill:var(--color-bg-alt)"/>
+        <ellipse cx="150" cy="47" rx="26" ry="8" style="fill:var(--color-card); stroke:var(--color-ink-soft)" stroke-width="1.5"/>
+        <text x="150" y="146" font-size="12" text-anchor="middle" style="fill:var(--color-ink-soft)">白身が殻に密着</text>
+        <line x1="176" y1="45" x2="220" y2="28" style="stroke:var(--color-ink-soft)" stroke-width="1"/>
+        <text x="224" y="30" font-size="12" style="fill:var(--color-ink-soft)">気室</text>
 
-        <text x="450" y="22" font-size="13" text-anchor="middle" style="fill:var(--color-ink-soft)">急冷後</text>
-        <ellipse cx="450" cy="145" rx="85" ry="105" fill="none" style="stroke:var(--color-ink)" stroke-width="2.5"/>
-        <ellipse cx="450" cy="145" rx="85" ry="105" style="fill:var(--color-accent-soft)" opacity="0.45"/>
-        <ellipse cx="450" cy="150" rx="73" ry="92" style="fill:var(--color-bg-alt)"/>
-        <circle cx="450" cy="72" r="7" style="fill:var(--color-card); stroke:var(--color-ink-soft)" stroke-width="1.5"/>
+        <text x="450" y="20" font-size="13" text-anchor="middle" style="fill:var(--color-ink-soft)">氷水で急冷したあと</text>
+        <ellipse cx="450" cy="140" rx="83" ry="103" style="fill:var(--color-accent-soft)" opacity="0.55"/>
+        <ellipse cx="450" cy="140" rx="85" ry="105" fill="none" style="stroke:var(--color-ink)" stroke-width="2.5"/>
+        <ellipse cx="450" cy="142" rx="74" ry="94" style="fill:var(--color-bg-alt)"/>
+        <ellipse cx="450" cy="48" rx="22" ry="6" style="fill:var(--color-card); stroke:var(--color-ink-soft)" stroke-width="1.5"/>
+        <text x="450" y="136" font-size="12" text-anchor="middle" style="fill:var(--color-ink-soft)">白身が縮む</text>
+        <text x="450" y="154" font-size="11" text-anchor="middle" style="fill:var(--color-ink-soft)">(体積 約 −4%)</text>
 
-        <g style="stroke:var(--color-ink-soft)" stroke-width="1.5">
-          <line x1="450" y1="95" x2="450" y2="105"/>
-          <line x1="410" y1="130" x2="402" y2="124"/>
-          <line x1="490" y1="130" x2="498" y2="124"/>
+        <g style="stroke:var(--color-accent)" stroke-width="2">
+          <line x1="382" y1="142" x2="396" y2="142"/>
+          <line x1="518" y1="142" x2="504" y2="142"/>
+          <line x1="450" y1="232" x2="450" y2="218"/>
+        </g>
+        <g style="fill:var(--color-accent)">
+          <polygon points="396,137 404,142 396,147"/>
+          <polygon points="504,137 496,142 504,147"/>
+          <polygon points="445,218 450,210 455,218"/>
         </g>
 
-        <line x1="500" y1="95" x2="540" y2="60" style="stroke:var(--color-ink-soft)" stroke-width="1"/>
-        <text x="544" y="58" font-size="12" style="fill:var(--color-ink-soft)">気室(収縮)</text>
+        <line x1="527" y1="180" x2="548" y2="205" style="stroke:var(--color-ink-soft)" stroke-width="1"/>
+        <text x="550" y="218" font-size="12" style="fill:var(--color-ink-soft)">すきま</text>
+        <line x1="472" y1="46" x2="516" y2="28" style="stroke:var(--color-ink-soft)" stroke-width="1"/>
+        <text x="520" y="30" font-size="12" style="fill:var(--color-ink-soft)">気室</text>
 
-        <line x1="500" y1="145" x2="552" y2="145" style="stroke:var(--color-ink-soft)" stroke-width="1"/>
-        <text x="556" y="149" font-size="12" style="fill:var(--color-ink-soft)">すきま</text>
+        <text x="450" y="268" font-size="12" text-anchor="middle" style="fill:var(--color-ink-soft)">殻はほとんど縮まない(約 −0.2%)</text>
       </svg>
-      <div class="caption">急冷すると白身は内側に縮むが、殻と気室はそれより先に縮むため、薄いすきまができる。</div>
+      <div class="caption">急冷すると、白身は殻よりはるかに大きく縮む。外側から冷えるため縮みは殻との境目に集中し、薄いすきまができる(すきまは誇張して描いている)。</div>
     </div>
 
-    <h2>気室の収縮が、剥がれる「きっかけ」になる</h2>
-    <p>卵の鈍端(丸みのある方)には、殻のすぐ内側に気室と呼ばれる小さな空気の層がある。気体は液体や固体よりもずっと大きく体積が変化するため、急冷されるとこの気室が真っ先に縮む。気室が縮んで膜が内側に引っ張られると、そこを起点に殻と白身のあいだのすきまがさらに広がりやすくなる。卵の丸い方から剥き始めるとうまくいきやすいのは、偶然ではなく、気室がある場所だからだ。</p>
+    <h2>丸い方から剥くとうまくいく理由</h2>
+    <p>卵の丸みのある方(鈍端)には、<strong>気室</strong>と呼ばれる小さな空気の部屋がある。卵の殻の内側には薄い膜(卵殻膜)が2枚重なっていて、気室はこの2枚の膜のあいだに空気がたまった場所だ。つまり鈍端では、はじめから膜と殻のあいだにすき間がある。そこから指を入れれば、すきまに沿って膜ごとめくっていきやすい。丸い方から剥き始めるとうまくいくのは、偶然ではない。</p>
 
-    <blockquote>殻がつるんと剥がれる瞬間は、冷却という単純な操作が生んだ、ミクロな「すきま」の仕事だ。</blockquote>
+    <blockquote>殻がつるんと剥がれる瞬間は、冷える速さと縮む量という、二つの「差」が生んだ小さなすきまの仕事だ。</blockquote>
 
-    <p>ただし、これだけが全てではない。産みたての新鮮な卵は白身のpHが低く、膜にくっつきやすい性質があるため、どれだけ急冷しても剥きにくいことがある。熱膨張の物理は、剥きやすさを決める大きな要因のひとつではあるが、唯一の答えというわけではない。</p>
+    <p>では、「数千倍」「20倍以上」という数字はどこから出てきたのか。ここからは大学1年生の物理で、この見積もりを一つずつ確かめてみる。</p>
+
+    <section class="derivation">
+      <div class="label">Derivation</div>
+      <h2>大学物理で導いてみる</h2>
+      <p class="lead">使うのは「単位(次元)の考え方」「熱膨張の式」「近似 \((1+x)^n \approx 1+nx\)」「シャルルの法則」だけ。数字を入れながら、オーダー(桁)を見積もっていく。</p>
+
+      <h3>Step 1 冷える時間は「厚さの2乗」に比例する</h3>
+      <p>物の中の温度は熱伝導方程式</p>
+      $$\frac{\partial T}{\partial t} = \alpha\,\frac{\partial^2 T}{\partial x^2}$$
+      <p>に従う(導き方は<a href="sous-vide-heat.html">低温調理の記事</a>で詳しく書いた)。\(\alpha\) は熱拡散率で、単位は m²/s。この方程式に出てくる量で「時間」をつくると、厚さ(半径)を \(L\) として</p>
+      $$t_{\text{冷却}} \sim \frac{L^2}{\alpha}$$
+      <p>という組み合わせしかない。つまり、<strong>冷えるのにかかる時間は、厚さの2乗に比例する</strong>。</p>
+      <p>白身の熱拡散率は、水が主成分なので \(\alpha \approx 1.4\times10^{-7}\) m²/s 程度。卵を半径 \(R \approx 2.2\) cm の球とみなすと、</p>
+      $$\frac{R^2}{\alpha} = \frac{(0.022)^2}{1.4\times10^{-7}} \approx 3500\ \text{s}$$
+      <p>球の場合は、熱が四方八方から抜けるぶん速く冷え、方程式をきちんと解くと時定数は \(R^2/(\pi^2\alpha) \approx 350\) 秒、つまり約6分になる。</p>
+      <p>一方、殻の厚さは \(d \approx 0.35\) mm。熱拡散率が白身と同じくらいだとしても、</p>
+      $$\frac{d^2}{\alpha} = \frac{(0.35\times10^{-3})^2}{1.4\times10^{-7}} \approx 0.9\ \text{s}$$
+      <p>と、1秒もかからない。二つの時間の比は \((R/d)^2 = (22/0.35)^2 \approx 4000\)。「冷える速さが数千倍違う」というのは、この厚さの比の2乗から来ている。</p>
+
+      <div class="diagram">
+        <svg viewBox="0 0 600 260" xmlns="http://www.w3.org/2000/svg">
+          <line x1="80" y1="220" x2="560" y2="220" style="stroke:var(--color-line)" stroke-width="2"/>
+          <line x1="80" y1="30" x2="80" y2="220" style="stroke:var(--color-line)" stroke-width="2"/>
+          <g style="stroke:var(--color-line)" stroke-width="2">
+            <line x1="200" y1="214" x2="200" y2="226"/>
+            <line x1="320" y1="214" x2="320" y2="226"/>
+            <line x1="440" y1="214" x2="440" y2="226"/>
+            <line x1="560" y1="214" x2="560" y2="226"/>
+          </g>
+          <g font-size="11" text-anchor="middle" style="fill:var(--color-ink-soft)">
+            <text x="80" y="240">0.1秒</text>
+            <text x="200" y="240">1秒</text>
+            <text x="320" y="240">10秒</text>
+            <text x="440" y="240">100秒</text>
+            <text x="560" y="240">1000秒</text>
+          </g>
+          <g font-size="11" text-anchor="end" style="fill:var(--color-ink-soft)">
+            <text x="74" y="43">95℃</text>
+            <text x="74" y="129">50℃</text>
+            <text x="74" y="224">0℃</text>
+          </g>
+          <line x1="413.4" y1="30" x2="413.4" y2="220" style="stroke:var(--color-line)" stroke-width="1" stroke-dasharray="3 4"/>
+          <text x="413.4" y="26" font-size="10" text-anchor="middle" style="fill:var(--color-ink-soft)">1分</text>
+          <line x1="533.4" y1="30" x2="533.4" y2="220" style="stroke:var(--color-line)" stroke-width="1" stroke-dasharray="3 4"/>
+          <text x="533.4" y="26" font-size="10" text-anchor="middle" style="fill:var(--color-ink-soft)">10分</text>
+
+          <path d="M80.0,90.7 L92.0,101.4 L104.0,113.6 L116.0,127.2 L128.0,141.9 L140.0,157.1 L152.0,172.1 L164.0,186.0 L176.0,198.0 L188.0,207.2 L200.0,213.6 L212.0,217.3 L224.0,219.1 L236.0,219.8 L248.0,220.0 L560.0,220.0" fill="none" style="stroke:var(--color-ink-soft)" stroke-width="2.5" stroke-dasharray="5 4"/>
+          <path d="M80.0,39.5 L212.0,39.5 L224.0,39.7 L236.0,40.2 L248.0,41.2 L260.0,43.4 L272.0,47.0 L284.0,52.2 L296.0,59.1 L308.0,67.6 L320.0,77.3 L332.0,87.9 L344.0,98.9 L356.0,110.1 L368.0,121.1 L380.0,131.7 L392.0,141.8 L404.0,151.2 L416.0,160.0 L428.0,168.0 L440.0,175.4 L452.0,182.1 L464.0,188.2 L476.0,193.6 L488.0,198.6 L500.0,203.0 L512.0,206.9 L524.0,210.4 L536.0,213.5 L548.0,215.9 L560.0,217.7" fill="none" style="stroke:var(--color-accent-soft)" stroke-width="3"/>
+          <path d="M80.0,39.5 L428.0,39.5 L440.0,39.7 L446.0,40.0 L452.0,40.6 L458.0,41.7 L464.0,43.6 L470.0,46.5 L476.0,50.6 L482.0,56.4 L488.0,63.7 L494.0,72.7 L500.0,83.3 L506.0,95.1 L512.0,108.0 L518.0,121.3 L524.0,134.9 L530.0,148.1 L536.0,160.7 L542.0,172.3 L548.0,182.7 L554.0,191.7 L560.0,199.2" fill="none" style="stroke:var(--color-accent)" stroke-width="3"/>
+
+          <text x="150" y="128" font-size="12" style="fill:var(--color-ink)">殻</text>
+          <text x="350" y="80" font-size="12" style="fill:var(--color-ink)">殻から 2 mm 内側の白身</text>
+          <text x="508" y="62" font-size="12" style="fill:var(--color-ink)">中心</text>
+        </svg>
+        <div class="caption">95℃の卵(半径 2.2 cm)を0℃の氷水に入れたときの温度変化(横軸は対数目盛)。球の熱伝導方程式を数値的に解いて描いた。殻は1秒ほどで冷えきるが、中心は数分経っても熱いまま。</div>
+      </div>
+
+      <p>図を見ると、殻のすぐ内側(2 mm)の白身は1分ほどでかなり冷えるのに、中心は3分経っても 90℃ 近いままだ。この「外側だけ冷えて、中は熱い」時間帯が、次の Step で効いてくる。</p>
+
+      <h3>Step 2 線膨張と体膨張 ── 「3倍」の理由</h3>
+      <p>固体の長さ \(L\) が温度変化 \(\Delta T\) でどれだけ伸び縮みするかは、</p>
+      $$\Delta L = \alpha_L\,L\,\Delta T$$
+      <p>で表される(\(\alpha_L\) は線膨張率。さっきの熱拡散率 \(\alpha\) とは別物なので注意)。では体積はどうなるか。一辺 \(L\) の立方体を考えると、温度が \(\Delta T\) 変わったあとの体積は</p>
+      $$V' = \big(L(1+\alpha_L\Delta T)\big)^3 = L^3\,(1+\alpha_L\Delta T)^3$$
+      <p>\(\alpha_L\Delta T\) は 1 よりずっと小さいので、近似 \((1+x)^3 \approx 1+3x\) を使うと、</p>
+      $$\frac{\Delta V}{V} \approx 3\,\alpha_L\,\Delta T \equiv \beta\,\Delta T,\qquad \beta = 3\alpha_L$$
+      <p>体積の膨張率 \(\beta\) は、線膨張率のちょうど3倍になる。3方向(縦・横・高さ)それぞれに伸びるからだ。</p>
+
+      <h3>Step 3 殻と白身、それぞれどれだけ縮むか</h3>
+      <p><strong>殻</strong>:主成分の炭酸カルシウム(方解石)の線膨張率は、向きによって違うが平均するとおよそ \(\alpha_L \approx 6\times10^{-6}\) /K。95℃ → 5℃(\(\Delta T = -90\) K)で、</p>
+      $$\frac{\Delta V}{V}\bigg|_{\text{殻}} \approx 3 \times 6\times10^{-6} \times 90 \approx 0.16\%$$
+      <p><strong>白身</strong>:主成分の水は、膨張率が温度によって大きく変わるので、一定の \(\beta\) を使うより密度の表から直接計算した方が正確だ。</p>
+
+      <div class="table-wrap">
+        <table class="data">
+          <tr><th>水の温度</th><th>密度 (kg/m³)</th><th>95℃ と比べた体積</th></tr>
+          <tr><td>95℃</td><td>961.9</td><td>基準</td></tr>
+          <tr><td>60℃</td><td>983.2</td><td>−2.2%</td></tr>
+          <tr><td>20℃</td><td>998.2</td><td>−3.6%</td></tr>
+          <tr><td>5℃</td><td>1000.0</td><td>−3.8%</td></tr>
+        </table>
+      </div>
+
+      <p>質量が変わらなければ体積は密度に反比例するので、95℃ → 5℃ で</p>
+      $$\frac{\Delta V}{V}\bigg|_{\text{白身}} \approx 1 - \frac{961.9}{1000.0} \approx 3.8\%$$
+      <p>殻の約 24 倍だ。これを半径の変化に直してみる。球の体積 \(V = \tfrac{4}{3}\pi R^3\) を微分すると \(dV/V = 3\,dR/R\)(Step 2 と同じ「3倍」の関係)なので、</p>
+      $$\frac{\Delta R}{R} = \frac{1}{3}\,\frac{\Delta V}{V}$$
+      <ul>
+        <li>白身:\(\Delta R \approx \tfrac{1}{3}\times 3.8\% \times 22\ \text{mm} \approx 0.28\) mm</li>
+        <li>殻:\(\Delta R \approx \tfrac{1}{3}\times 0.16\% \times 22\ \text{mm} \approx 0.01\) mm</li>
+      </ul>
+      <p>もし白身が自由に縮めるなら、殻とのあいだには約 0.27 mm ── ちょうど<strong>殻の厚さと同じくらい</strong>のずれが生じる計算になる。目に見えるほどではないが、薄い膜をはがすには十分な大きさだ。</p>
+
+      <h3>Step 4 なぜ「氷水」なのか ── 温度差ではなく、温度の傾き</h3>
+      <p>表をよく見ると、白身の縮みの大部分(−3.6%)は、20℃ の水道水まで冷やすだけで起きている。それなら、なぜわざわざ氷水を使うのか。</p>
+      <p>ポイントは「どれだけ縮むか」だけでなく、<strong>外側と内側の縮み方の差</strong>にある。冷たい水ほど外側が速く・強く冷えるので、「外側の白身は縮んだのに中心はまだ熱くて大きい」という状態が、よりはっきりと生まれる。外側の白身は、縮みたくても内側の熱い塊に支えられて縮みきれず、そのぶん殻との境目が引っ張られる。この引っ張りが、白身を膜からはがす力になる。冷却がゆっくりだと、卵全体がそろって冷えるので、境目にしわ寄せが集中しにくい。</p>
+      <p>さらに、氷水で一気に冷やすと余熱による加熱も止まるので、黄身の火の通り具合も狙いどおりにしやすい。</p>
+
+      <h3>Step 5 気室の空気は、いちばんよく縮む</h3>
+      <p>気体はさらに大きく縮む。圧力一定なら、シャルルの法則 \(V \propto T\)(\(T\) は絶対温度)より、</p>
+      $$\frac{\Delta V}{V} = \frac{\Delta T}{T} = \frac{90}{273+95} \approx 24\%$$
+      <p>白身や黄身の体積を合わせて約 45 mL(半径 2.2 cm の球)とすると、中身全体の縮みは 3.8% × 45 mL ≈ 1.7 mL。さらに気室の空気も縮むので、殻の中では「体積が足りない」状態になる。殻には目に見えない小さな穴(気孔)が数千個あいているので、この不足分の一部は外の水や空気が気孔から吸い込まれることで埋められると考えられる。</p>
+      <p>正直に言うと、この不足分のうち「白身と膜のあいだのすきま」「気孔からの吸い込み」「縮みきれずに残る引っ張り」がそれぞれどれくらいの割合になるかは、ここでの単純な見積もりだけでは決めきれない。ただ、どの経路をたどるにせよ、白身が殻の内側から離れる方向に力が働くことは確かだ。</p>
+
+      <h3>Step 6 物理だけでは決まらないこと</h3>
+      <ul>
+        <li><strong>卵の新しさ(pH)</strong>:産みたての卵は白身に二酸化炭素が多く溶けていて pH が低く(7.6 前後)、白身が膜にくっつきやすい。日にちが経つと二酸化炭素が殻の気孔から抜けて pH が上がり(9 以上)、剥きやすくなる。どれだけ急冷しても新しい卵が剥きにくいのは、これが原因だ。</li>
+        <li><strong>茹で始め</strong>:水からではなく、沸騰したお湯に卵を入れると剥きやすくなるという報告も多い。外側の白身が一気に固まり、膜と結びつく前に形が決まるためだと考えられている。これも「外側と内側の時間差」の話で、急冷と同じ構造をしている。</li>
+      </ul>
+    </section>
+
+    <p>熱膨張の物理は、剥きやすさを決める大きな要因のひとつではあるが、唯一の答えというわけではない。それでも、「薄いものはすぐ冷え、厚いものはなかなか冷えない」「水は熱いほどよく膨らむ」という二つの事実だけで、台所のコツの理由がここまで説明できるのは、なかなか面白い。</p>
+
+    <h3>参考</h3>
+    <ul class="refs">
+      <li>国立天文台 編『理科年表』(水の密度、物質の熱膨張率)</li>
+      <li>H. McGee, <em>On Food and Cooking</em>, Scribner(卵の構造と pH)</li>
+    </ul>
 
     <a class="back-link" href="../index.html">&larr; Home に戻る</a>
   </div>

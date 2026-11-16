@@ -4,23 +4,26 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>低温調理と熱伝導方程式 — Eatropy</title>
-<meta name="description" content="なぜ低温調理は失敗しにくいのか。フーリエの熱伝導方程式で、肉の中心温度の上がり方を追いかけます。">
+<meta name="description" content="なぜ低温調理は失敗しにくいのか。フーリエの法則から熱伝導方程式を組み立て、肉の中心温度の上がり方と「厚さの2乗」の法則を導きます。">
 <link rel="canonical" href="https://eatropy.github.io/Eatropy/posts/sous-vide-heat.html">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://eatropy.github.io/Eatropy/posts/sous-vide-heat.html">
 <meta property="og:site_name" content="Eatropy">
 <meta property="og:title" content="低温調理と熱伝導方程式 — Eatropy">
-<meta property="og:description" content="なぜ低温調理は失敗しにくいのか。フーリエの熱伝導方程式で、肉の中心温度の上がり方を追いかけます。">
+<meta property="og:description" content="なぜ低温調理は失敗しにくいのか。フーリエの法則から熱伝導方程式を組み立て、肉の中心温度の上がり方と「厚さの2乗」の法則を導きます。">
 <meta property="og:image" content="https://eatropy.github.io/Eatropy/og-image.png">
 <meta property="og:locale" content="ja_JP">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="低温調理と熱伝導方程式 — Eatropy">
-<meta name="twitter:description" content="なぜ低温調理は失敗しにくいのか。フーリエの熱伝導方程式で、肉の中心温度の上がり方を追いかけます。">
+<meta name="twitter:description" content="なぜ低温調理は失敗しにくいのか。フーリエの法則から熱伝導方程式を組み立て、肉の中心温度の上がり方と「厚さの2乗」の法則を導きます。">
 <meta name="twitter:image" content="https://eatropy.github.io/Eatropy/og-image.png">
 <link rel="icon" href="../favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&family=Noto+Serif+JP:wght@500;600&family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'\\(',right:'\\)',display:false}]});"></script>
 <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
@@ -50,11 +53,12 @@
 
     <p>低温調理器で肉を63℃のお湯に1時間沈めておくだけで、驚くほど柔らかく、しっとりとした仕上がりになる。フライパンで焼く調理に比べて、低温調理が「失敗しにくい」と言われるのには、熱の伝わり方そのものに理由がある。</p>
 
-    <h2>肉の中心温度は、環境の温度に漸近する</h2>
-    <p>肉の内部の温度変化は、熱伝導方程式(フーリエの法則を時間方向に拡張したもの)に従う。簡単なモデルでは、肉の中心温度 T(t) は、周囲の温度 T<sub>env</sub> に向かって指数関数的に近づいていく。</p>
+    <h2>肉の中心温度は、お湯の温度に近づいていく</h2>
+    <p>お湯に入れた肉の中心温度 \(T(t)\) は、はじめは勢いよく上がり、お湯の温度 \(T_{\text{env}}\) に近づくにつれて上がり方がゆっくりになっていく。おおまかには、次のような指数関数で表せる。</p>
 
     <div class="callout">
-      T(t) = T<sub>env</sub> − (T<sub>env</sub> − T<sub>0</sub>)·exp(−t / τ)。τ は肉の熱拡散率と大きさで決まる時定数。時間が十分に経てば、中心温度は周囲の温度 T<sub>env</sub> に限りなく近づき、それを超えることはない。
+      \(T(t) = T_{\text{env}} - (T_{\text{env}} - T_0)\,e^{-t/\tau}\)<br>
+      \(T_0\) は入れたときの肉の温度、\(\tau\)(タウ)は肉の厚さと材質で決まる「時定数」。時間が十分に経てば、中心温度は \(T_{\text{env}}\) に限りなく近づくが、それを超えることはない。
     </div>
 
     <div class="diagram">
@@ -77,16 +81,139 @@
         <text x="500" y="240" font-size="12" style="fill:var(--color-ink-soft)">時間 t</text>
         <text x="18" y="24" font-size="12" style="fill:var(--color-ink-soft)">温度</text>
       </svg>
-      <div class="caption">低温調理の中心温度は T<sub>env</sub> に漸近して止まるが、フライパン表面は目標を大きく超えて上下する。</div>
+      <div class="caption">低温調理の中心温度は T<sub>env</sub> に近づいて止まるが、フライパン表面は目標を大きく超えて上下する。</div>
     </div>
 
     <h2>「超えない」という性質が安全装置になる</h2>
-    <p>フライパンや直火の調理では、表面は数百℃に達する一方、中心部はまだ生のまま、という温度のムラが生まれやすい。これは加熱源の温度がそもそも高すぎるために、時間の管理がそのまま仕上がりの精度に直結してしまうからだ。</p>
-    <p>一方、低温調理ではお湯の温度 T<sub>env</sub> 自体を、目標とする仕上がり温度(例えばミディアムレアなら63℃前後)に設定する。中心温度は原理的にこの T<sub>env</sub> を超えて上がることがないため、「少し長く沈けすぎた」程度の時間のブレが、仕上がりに大きな影響を与えにくい。加熱時間の許容範囲が広いのは、方程式の構造そのものに由来している。</p>
+    <p>フライパンや直火の調理では、表面は百数十℃以上に達する一方、中心部はまだ生のまま、という温度のムラが生まれやすい。加熱源の温度がそもそも高すぎるために、時間の管理がそのまま仕上がりの精度に直結してしまうからだ。</p>
+    <p>一方、低温調理ではお湯の温度 \(T_{\text{env}}\) 自体を、目標とする仕上がり温度(例えばミディアムレアなら57〜63℃前後)に設定する。中心温度はこの \(T_{\text{env}}\) を超えて上がることがないため、「少し長く沈めすぎた」程度の時間のブレが、仕上がりに大きな影響を与えにくい。</p>
 
-    <blockquote>低温調理の「失敗しにくさ」は、腕の良さではなく、指数関数が持つ漸近的な振る舞いのおかげだ。</blockquote>
+    <blockquote>低温調理の「失敗しにくさ」は、腕の良さではなく、指数関数が持つ「近づくけれど超えない」振る舞いのおかげだ。</blockquote>
 
-    <p>温度計を肉に刺さなくても、方程式の形さえ分かっていれば、低温調理器の設定温度が仕上がりの上限を決めていることが見えてくる。キッチンタイマーよりも、τ の大きさ(肉の厚みと熱拡散率)を気にする方が、実は本質的なのかもしれない。</p>
+    <p>ここまでは結果だけを書いた。では、この指数関数はどこから出てくるのか。時定数 \(\tau\) は何で決まるのか。ここからは、大学1年生で習う微分・積分を使って、実際に式を組み立ててみる。</p>
+
+    <section class="derivation">
+      <div class="label">Derivation</div>
+      <h2>大学物理で導いてみる</h2>
+      <p class="lead">使うのは「微分」「テイラー展開(1次まで)」「指数関数の微分」だけ。途中の式変形はすべて書くので、手を動かしながら追ってみてほしい。</p>
+
+      <h3>Step 1 熱は温度の高い方から低い方へ ── フーリエの法則</h3>
+      <p>まず、熱がどう流れるかを決める経験則から始める。肉を1方向(厚さ方向を \(x\) とする)だけで考えると、単位時間・単位面積あたりに流れる熱の量(熱流束 \(q\)、単位は W/m²)は、温度の傾きに比例する。</p>
+      $$q = -k\,\frac{\partial T}{\partial x}$$
+      <p>これがフーリエの法則だ。\(k\) は熱伝導率(W/(m·K))で、肉ならおよそ 0.5 W/(m·K) 程度。マイナスがついているのは、「温度が下がっていく向きに熱が流れる」ことを表すためだ。\(\partial T/\partial x &gt; 0\)(右ほど熱い)なら \(q &lt; 0\)、つまり熱は左向きに流れる。</p>
+      <p>\(\partial\)(ラウンド・ディー)は偏微分の記号で、「時間 \(t\) を止めたまま、\(x\) についてだけ微分する」という意味だと思えばよい。</p>
+
+      <h3>Step 2 薄い一枚に注目して、エネルギーの出入りを数える</h3>
+      <p>肉の中から、位置 \(x\) と \(x+\Delta x\) にはさまれた、厚さ \(\Delta x\)、断面積 \(A\) の薄い一枚を切り出して考える。この一枚の温度が時間 \(\Delta t\) のあいだにどれだけ上がるかは、「左から入ってくる熱」と「右へ出ていく熱」の差で決まる。</p>
+      $$\underbrace{\rho c\,A\,\Delta x}_{\text{熱容量}}\;\Delta T = \Big[\,q(x) - q(x+\Delta x)\,\Big]\,A\,\Delta t$$
+      <p>左辺は「温度を \(\Delta T\) 上げるのに必要な熱」で、\(\rho\) は密度(kg/m³)、\(c\) は比熱(J/(kg·K))。\(\rho A \Delta x\) がこの一枚の質量なので、質量×比熱×温度変化、という高校でもおなじみの形になっている。</p>
+      <p>右辺の \(q(x+\Delta x)\) を、テイラー展開の1次までで近似する。</p>
+      $$q(x+\Delta x) \approx q(x) + \frac{\partial q}{\partial x}\,\Delta x$$
+      <p>これを代入すると、右辺は \(-\dfrac{\partial q}{\partial x}\,\Delta x\,A\,\Delta t\) になる。両辺を \(A\,\Delta x\,\Delta t\) で割って \(\Delta t \to 0\) とすれば、</p>
+      $$\rho c\,\frac{\partial T}{\partial t} = -\frac{\partial q}{\partial x}$$
+      <p>ここに Step 1 のフーリエの法則 \(q = -k\,\partial T/\partial x\) を入れると、</p>
+      $$\boxed{\;\frac{\partial T}{\partial t} = \alpha\,\frac{\partial^2 T}{\partial x^2}\;},\qquad \alpha = \frac{k}{\rho c}$$
+      <p>これが<strong>熱伝導方程式</strong>(熱拡散方程式)だ。\(\alpha\) は熱拡散率と呼ばれ、「熱がどれだけ速く広がるか」を表す。肉の場合、\(k \approx 0.48\) W/(m·K)、\(\rho \approx 1050\) kg/m³、\(c \approx 3300\) J/(kg·K) とすると、</p>
+      $$\alpha = \frac{0.48}{1050 \times 3300} \approx 1.4 \times 10^{-7}\ \text{m}^2/\text{s}$$
+
+      <div class="callout">
+        式の読み方:右辺の \(\partial^2 T/\partial x^2\) は温度分布の「曲がり具合」。温度のグラフが下に凸(まわりより冷たい谷)になっている場所は \(\partial^2 T/\partial x^2 &gt; 0\) なので温度が上がり、上に凸(まわりより熱い山)の場所は温度が下がる。つまり<strong>熱伝導は、温度のでこぼこをならしていく働き</strong>をしている。
+      </div>
+
+      <h3>Step 3 解かなくてもわかる「厚さの2乗」の法則</h3>
+      <p>方程式を解く前に、単位(次元)だけを見てみる。\(\alpha\) の単位は m²/s。肉の厚さの半分を \(L\)(m)とすると、\(\alpha\) と \(L\) から「時間」の単位をつくる組み合わせは、ひとつしかない。</p>
+      $$t_{\text{特徴}} \sim \frac{L^2}{\alpha}$$
+      <p>つまり、<strong>火が通るまでの時間は厚さの2乗に比例する</strong>。厚さが2倍のステーキは、2倍ではなく約4倍の時間がかかる。厚さ3 cm(\(L = 1.5\) cm)の肉なら、</p>
+      $$\frac{L^2}{\alpha} = \frac{(0.015)^2}{1.4\times10^{-7}} \approx 1600\ \text{s} \approx 27\ \text{分}$$
+      <p>レシピ本の「厚さ○cmなら○分」という表が、厚さに対して比例ではなく、ぐんと伸びていくのはこのためだ。</p>
+
+      <h3>Step 4 方程式を満たす形を探す</h3>
+      <p>次に、方程式を実際に満たす解を探してみる。設定は次のとおり。</p>
+      <ul>
+        <li>肉は厚さ \(2L\) の板で、\(-L \le x \le L\) にある(\(x = 0\) が中心)</li>
+        <li>表面 \(x = \pm L\) は、お湯の温度 \(T_{\text{env}}\) に保たれる</li>
+        <li>はじめ(\(t = 0\))は全体が冷蔵庫の温度 \(T_0\)</li>
+      </ul>
+      <p>計算を楽にするため、「お湯の温度からどれだけ離れているか」を表す量 \(\theta = T - T_{\text{env}}\) を使う。\(T_{\text{env}}\) は定数なので、\(\theta\) もまったく同じ方程式 \(\partial\theta/\partial t = \alpha\,\partial^2\theta/\partial x^2\) を満たし、表面では \(\theta = 0\) になる。</p>
+      <p>ここで、「形は変わらずに、全体の大きさだけが指数関数的に小さくなる」解を試してみる。</p>
+      $$\theta(x,t) = C\cos\!\left(\frac{\pi x}{2L}\right)e^{-t/\tau}$$
+      <p>\(\cos\) を選んだのは、中心で一番大きく、表面 \(x = \pm L\) で \(\cos(\pm\pi/2) = 0\) となって境界条件を自動的に満たすからだ。代入して確かめてみよう。左辺と右辺をそれぞれ計算すると、</p>
+      $$\frac{\partial\theta}{\partial t} = -\frac{1}{\tau}\,\theta,\qquad \alpha\,\frac{\partial^2\theta}{\partial x^2} = -\alpha\left(\frac{\pi}{2L}\right)^2\theta$$
+      <p>両者が等しくなるためには、</p>
+      $$\boxed{\;\tau = \frac{4L^2}{\pi^2\alpha}\;}$$
+      <p>であればよい。こうして、記事のはじめに書いた指数関数 \(e^{-t/\tau}\) と、その時定数 \(\tau\) の正体が出てきた。Step 3 の「\(L^2/\alpha\)」に、\(4/\pi^2 \approx 0.4\) という係数がついた形になっている。</p>
+
+      <div class="callout">
+        補足:はじめの温度分布は「全体が一様に \(T_0\)」なので、厳密にはこの \(\cos\) ひとつでは表せない。実際には \(\cos(3\pi x/2L)\)、\(\cos(5\pi x/2L)\)… と、細かく波打つ形を足し合わせる必要がある(フーリエ級数。大学2年ごろに習う)。ただし細かい波ほど \(\tau\) が \(1/9\)、\(1/25\)… と短く、すぐに消えてしまう。だから少し時間が経てば、最初の \(\cos\) ひとつだけが残る。
+      </div>
+
+      <p>この厳密解を数値で計算して、肉の中の温度分布が時間とともにどう変わるかを描いたのが下の図だ。</p>
+
+      <div class="diagram">
+        <svg viewBox="0 0 600 260" xmlns="http://www.w3.org/2000/svg">
+          <line x1="80" y1="220" x2="560" y2="220" style="stroke:var(--color-line)" stroke-width="2"/>
+          <line x1="80" y1="30" x2="80" y2="220" style="stroke:var(--color-line)" stroke-width="2"/>
+          <line x1="560" y1="30" x2="560" y2="220" style="stroke:var(--color-line)" stroke-width="2"/>
+          <line x1="80" y1="49" x2="560" y2="49" style="stroke:var(--color-ink-soft)" stroke-width="1" stroke-dasharray="4 4"/>
+          <text x="74" y="53" font-size="11" text-anchor="end" style="fill:var(--color-ink-soft)">63℃</text>
+          <text x="74" y="215" font-size="11" text-anchor="end" style="fill:var(--color-ink-soft)">0℃</text>
+          <text x="74" y="179" font-size="11" text-anchor="end" style="fill:var(--color-ink-soft)">16℃</text>
+
+          <path d="M80.0,49.0 L96.0,62.5 L112.0,75.9 L128.0,88.9 L144.0,101.4 L160.0,113.3 L176.0,124.3 L192.0,134.5 L208.0,143.6 L224.0,151.6 L240.0,158.5 L256.0,164.2 L272.0,168.7 L288.0,171.8 L304.0,173.8 L320.0,174.4 L336.0,173.8 L352.0,171.8 L368.0,168.7 L384.0,164.2 L400.0,158.5 L416.0,151.6 L432.0,143.6 L448.0,134.5 L464.0,124.3 L480.0,113.3 L496.0,101.4 L512.0,88.9 L528.0,75.9 L544.0,62.5 L560.0,49.0" fill="none" style="stroke:var(--color-accent-soft)" stroke-width="2.5"/>
+          <path d="M80.0,49.0 L96.0,54.3 L112.0,59.5 L128.0,64.6 L144.0,69.5 L160.0,74.2 L176.0,78.6 L192.0,82.7 L208.0,86.4 L224.0,89.7 L240.0,92.6 L256.0,95.0 L272.0,96.9 L288.0,98.2 L304.0,99.1 L320.0,99.3 L336.0,99.1 L352.0,98.2 L368.0,96.9 L384.0,95.0 L400.0,92.6 L416.0,89.7 L432.0,86.4 L448.0,82.7 L464.0,78.6 L480.0,74.2 L496.0,69.5 L512.0,64.6 L528.0,59.5 L544.0,54.3 L560.0,49.0" fill="none" style="stroke:var(--color-accent)" stroke-width="2" stroke-dasharray="6 4"/>
+          <path d="M80.0,49.0 L96.0,50.3 L112.0,51.6 L128.0,52.9 L144.0,54.1 L160.0,55.3 L176.0,56.4 L192.0,57.5 L208.0,58.4 L224.0,59.2 L240.0,59.9 L256.0,60.5 L272.0,61.0 L288.0,61.4 L304.0,61.6 L320.0,61.6 L336.0,61.6 L352.0,61.4 L368.0,61.0 L384.0,60.5 L400.0,59.9 L416.0,59.2 L432.0,58.4 L448.0,57.5 L464.0,56.4 L480.0,55.3 L496.0,54.1 L512.0,52.9 L528.0,51.6 L544.0,50.3 L560.0,49.0" fill="none" style="stroke:var(--color-accent)" stroke-width="3"/>
+
+          <text x="320" y="192" font-size="12" text-anchor="middle" style="fill:var(--color-ink-soft)">5分(中心 17℃)</text>
+          <text x="320" y="117" font-size="12" text-anchor="middle" style="fill:var(--color-ink-soft)">15分(中心 45℃)</text>
+          <text x="320" y="78" font-size="12" text-anchor="middle" style="fill:var(--color-ink-soft)">30分(中心 58℃)</text>
+
+          <text x="80" y="240" font-size="12" text-anchor="middle" style="fill:var(--color-ink-soft)">表面</text>
+          <text x="320" y="240" font-size="12" text-anchor="middle" style="fill:var(--color-ink-soft)">中心</text>
+          <text x="560" y="240" font-size="12" text-anchor="middle" style="fill:var(--color-ink-soft)">表面</text>
+        </svg>
+        <div class="caption">厚さ3 cmの肉(5℃)を63℃のお湯に入れたときの、厚さ方向の温度分布(α = 1.4×10⁻⁷ m²/s で計算)。どの時刻でも、63℃の線を超える場所はない。</div>
+      </div>
+
+      <h3>Step 5 「何分で仕上がるか」を計算する</h3>
+      <p>中心(\(x = 0\))では \(\cos 0 = 1\) なので、十分時間が経ったあとの中心温度は、厳密解の第1項から</p>
+      $$T_{\text{中心}}(t) \approx T_{\text{env}} - \frac{4}{\pi}\,(T_{\text{env}} - T_0)\,e^{-t/\tau}$$
+      <p>となる(\(4/\pi\) はフーリエ級数の係数から出てくる値)。厚さ3 cm の肉なら</p>
+      $$\tau = \frac{4\times(0.015)^2}{\pi^2 \times 1.4\times10^{-7}} \approx 650\ \text{s} \approx 11\ \text{分}$$
+      <p>5℃の肉の中心が、63℃まであと 0.5℃ のところに届く時間 \(t\) を求めてみよう。\(e^{-t/\tau}\) について解いて両辺の対数をとると、</p>
+      $$t = \tau\,\ln\!\left(\frac{4}{\pi}\cdot\frac{63-5}{0.5}\right) = \tau \ln 148 \approx 5.0\,\tau \approx 54\ \text{分}$$
+      <p>「63℃で1時間」という定番レシピの数字が、方程式からほぼそのまま出てくる。同じ計算を厚さを変えて行うと、次のようになる。</p>
+
+      <div class="table-wrap">
+        <table class="data">
+          <tr><th>肉の厚さ</th><th>時定数 τ</th><th>中心が 62.5℃ に届くまで</th></tr>
+          <tr><td>2 cm</td><td>約 5 分</td><td>約 24 分</td></tr>
+          <tr><td>3 cm</td><td>約 11 分</td><td>約 54 分</td></tr>
+          <tr><td>4 cm</td><td>約 19 分</td><td>約 1 時間 36 分</td></tr>
+          <tr><td>5 cm</td><td>約 30 分</td><td>約 2 時間 30 分</td></tr>
+        </table>
+      </div>
+      <p>厚さが 2 cm → 4 cm と2倍になると、時間は 24 分 → 96 分と4倍。Step 3 で予想した「2乗の法則」がきちんと表れている。</p>
+
+      <h3>Step 6 なぜ「超えない」と言い切れるのか</h3>
+      <p>最後に、中心温度がお湯の温度を超えないことを、方程式から確かめておく。仮に、肉の内部のどこかに「まわりより熱い山」ができて、そこが \(T_{\text{env}}\) より高くなったとする。山のてっぺんでは温度分布が上に凸なので \(\partial^2 T/\partial x^2 \le 0\)、すると熱伝導方程式から \(\partial T/\partial t \le 0\)、つまり<strong>その場所の温度は上がれない</strong>。</p>
+      <p>内部で新しく熱が生まれない限り(肉の中で発熱は起きない)、内部の温度は「はじめの温度」と「表面の温度」のうち高い方を超えられない。数学では最大値原理と呼ばれる性質だ。低温調理では表面の温度=お湯の温度を仕上がり温度に設定しているので、肉のどこを取っても、その温度を超えることはない。</p>
+      <p>逆にフライパンでは、表面の温度が100℃以上になる。最大値原理が保証するのは「表面の温度を超えない」ことだけなので、中心が目標温度に届くころには、表面付近はとっくに目標を通り過ぎている。焼いた肉の断面で、外側に灰色の「火が入りすぎた帯」ができるのはこのためだ。</p>
+
+      <h3>Step 7 モデルの限界</h3>
+      <ul>
+        <li>実際の表面温度は、お湯からの熱の受け取りやすさ(熱伝達率)で決まり、お湯の温度とぴったり同じではない。よく循環したお湯なら、この近似はかなり良い。</li>
+        <li>肉は板ではなく、脂や骨もある。\(\alpha\) の値も部位によって変わる。</li>
+        <li>中心が目標温度に<strong>届くこと</strong>と、食中毒菌が十分に減る(殺菌される)ことは別の話だ。殺菌には「温度 × 保持時間」が必要なので、安全に関しては信頼できる加熱時間の表に従ってほしい。</li>
+      </ul>
+    </section>
+
+    <p>温度計を肉に刺さなくても、方程式の形さえ分かっていれば、低温調理器の設定温度が仕上がりの上限を決めていることが見えてくる。キッチンタイマーよりも、\(\tau\) の大きさ ── つまり肉の厚さの2乗 ── を気にする方が、実は本質的なのかもしれない。</p>
+
+    <h3>参考</h3>
+    <ul class="refs">
+      <li>H. S. Carslaw, J. C. Jaeger, <em>Conduction of Heat in Solids</em>, Oxford University Press</li>
+      <li>D. E. Baldwin, <em>A Practical Guide to Sous Vide Cooking</em></li>
+    </ul>
 
     <a class="back-link" href="../index.html">&larr; Home に戻る</a>
   </div>

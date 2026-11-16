@@ -4,23 +4,26 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>キュウリの塩もみと浸透圧 — Eatropy</title>
-<meta name="description" content="なぜキュウリに塩を振ると水が出るのか。半透膜を挟んだ濃度差がつくる浸透圧の物理で、塩もみの仕組みを説明します。">
+<meta name="description" content="なぜキュウリに塩を振ると水が出るのか。半透膜を挟んだ濃度差がつくる浸透圧を、粒の数え上げとエントロピーから導き、塩もみにかかる時間まで見積もります。">
 <link rel="canonical" href="https://eatropy.github.io/Eatropy/posts/cucumber-osmosis.html">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://eatropy.github.io/Eatropy/posts/cucumber-osmosis.html">
 <meta property="og:site_name" content="Eatropy">
 <meta property="og:title" content="キュウリの塩もみと浸透圧 — Eatropy">
-<meta property="og:description" content="なぜキュウリに塩を振ると水が出るのか。半透膜を挟んだ濃度差がつくる浸透圧の物理で、塩もみの仕組みを説明します。">
+<meta property="og:description" content="なぜキュウリに塩を振ると水が出るのか。半透膜を挟んだ濃度差がつくる浸透圧を、粒の数え上げとエントロピーから導き、塩もみにかかる時間まで見積もります。">
 <meta property="og:image" content="https://eatropy.github.io/Eatropy/og-image.png">
 <meta property="og:locale" content="ja_JP">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="キュウリの塩もみと浸透圧 — Eatropy">
-<meta name="twitter:description" content="なぜキュウリに塩を振ると水が出るのか。半透膜を挟んだ濃度差がつくる浸透圧の物理で、塩もみの仕組みを説明します。">
+<meta name="twitter:description" content="なぜキュウリに塩を振ると水が出るのか。半透膜を挟んだ濃度差がつくる浸透圧を、粒の数え上げとエントロピーから導き、塩もみにかかる時間まで見積もります。">
 <meta name="twitter:image" content="https://eatropy.github.io/Eatropy/og-image.png">
 <link rel="icon" href="../favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&family=Noto+Serif+JP:wght@500;600&family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'\\(',right:'\\)',display:false}]});"></script>
 <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
@@ -51,14 +54,14 @@
     <p>薄切りにしたキュウリに塩を振って数分置いておくと、表面にじんわりと水の粒が浮かんでくる。和え物やサラダの下ごしらえで誰もがやったことのあるこの作業は、ただ水分を絞り出しているだけのようでいて、実は細胞膜を挟んだ物理現象そのものだ。</p>
 
     <h2>細胞膜は「半透膜」である</h2>
-    <p>キュウリの細胞を包む膜は、水分子は比較的自由に通すが、糖やイオンなど大きめの溶質分子は通しにくい、半透膜という性質を持っている。この「水だけは行き来できるが、溶けているものは行き来しにくい」という非対称さが、これから起きることの前提になる。</p>
+    <p>キュウリの細胞を包む膜は、水分子は比較的自由に通すが、糖やイオンなど溶けている分子(溶質)は通しにくい、半透膜という性質を持っている。この「水だけは行き来できるが、溶けているものは行き来しにくい」という非対称さが、これから起きることの前提になる。</p>
 
     <div class="callout">
-      浸透圧 π = cRT(ファントホッフの式)。c は膜を挟んだ溶質のモル濃度差、R は気体定数、T は絶対温度。濃度差が大きいほど、水を引き込もうとする圧力は強くなる。
+      浸透圧 \(\pi = c\,RT\)(ファントホッフの式)。\(c\) は膜を挟んだ溶質のモル濃度の差、\(R\) は気体定数、\(T\) は絶対温度。濃度差が大きいほど、水を引き込もうとする圧力は強くなる。
     </div>
 
     <h2>塩が「濃度差」をつくり出す</h2>
-    <p>キュウリの細胞内部は、もともと水に近い薄い濃度の溶液で満たされている。そこに塩を振ると、表面の濃度が一気に跳ね上がり、細胞内と表面のあいだに大きな濃度差が生まれる。半透膜は水を自由に通すので、水は「薄い方から濃い方へ」── つまり細胞の中から外へ向かって移動し、濃度差を埋めようとする。これが浸透であり、表面ににじむ水滴の正体だ。</p>
+    <p>キュウリの細胞内部は、もともと水に近い薄い濃度の溶液で満たされている。そこに塩を振ると、表面の濃度が一気に跳ね上がり、細胞内と表面のあいだに大きな濃度差が生まれる。半透膜は水を通すので、水は「薄い方から濃い方へ」── つまり細胞の中から外へ向かって移動し、濃度差を埋めようとする。これが浸透であり、表面ににじむ水滴の正体だ。</p>
 
     <div class="diagram">
       <svg viewBox="0 0 600 260" xmlns="http://www.w3.org/2000/svg">
@@ -117,11 +120,122 @@
     </div>
 
     <h2>下ごしらえとしての合理性</h2>
-    <p>この性質は、料理の現場では「水分を抜いて味をぼやけさせない」ための操作として使われている。塩もみしたキュウリや、漬物、酢の物の下ごしらえは、すべてこの浸透圧を利用して余分な水分を先に追い出し、調味料の濃度が薄まるのを防いでいる。しなびた野菜を真水に浸すと再びパリッとするのも、同じ原理が逆方向に働いているだけだ──周囲が薄い真水になれば、今度は水が細胞の中へと戻っていく。</p>
+    <p>この性質は、料理の現場では「水分を抜いて味をぼやけさせない」ための操作として使われている。塩もみしたキュウリや、漬物、酢の物の下ごしらえは、すべてこの浸透圧を利用して余分な水分を先に追い出し、調味料の濃度が薄まるのを防いでいる。しなびた野菜を真水に浸すと再びパリッとするのも、同じ原理が逆方向に働いているだけだ ── 周囲が薄い真水になれば、今度は水が細胞の中へと戻っていく。</p>
 
     <blockquote>塩を振るという一見乱暴な仕草は、濃度差を使って水を引き出す、計算された物理操作だ。</blockquote>
 
-    <p>濃度の高い方と低い方が均されていくこの動きは、見方を変えれば、偏りがならされ均一に近づこうとする自然な流れでもある。キュウリの表面ににじむ一滴の水は、濃度差という小さな「偏り」が解消されていく、ごくありふれた物理の現場なのだ。</p>
+    <p>ここまでは、「水は薄い方から濃い方へ動く」という結論を受け入れて話を進めた。でも、そもそもなぜ水はそっちへ動くのか。\(\pi = cRT\) という式はどこから来るのか。ここからは、大学1年生の熱力学の範囲で、この式を自分の手で導いてみる。</p>
+
+    <section class="derivation">
+      <div class="label">Derivation</div>
+      <h2>大学物理で導いてみる</h2>
+      <p class="lead">使うのは「理想気体の状態方程式」「対数の性質」「エントロピー \(S = k_B \ln W\)」だけ。鍵になるのは、<strong>溶けている粒は、気体の分子とそっくりにふるまう</strong>という見方だ。</p>
+
+      <h3>Step 1 溶けた粒は、溶液の中を「気体のように」飛び回っている</h3>
+      <p>水に溶けた塩のイオンや糖の分子は、水分子にもまれながら、溶液の中をでたらめに動き回っている。溶液がじゅうぶん薄ければ、溶質の粒どうしはめったに出会わないので、互いの影響はほぼ無視できる。これは、容器の中を飛び回る<strong>理想気体の分子</strong>とまったく同じ状況だ。</p>
+      <p>違うのは「まわりが真空ではなく水で満たされている」ことだけ。ここで半透膜の出番になる。水は膜を自由に通り抜けるので、水そのものは膜に力を及ぼさない。一方、溶質の粒は膜を通れないので、膜にぶつかっては跳ね返される。<strong>膜にとっては、溶質の粒だけが「気体の分子」のように壁を叩いている</strong>ことになる。</p>
+
+      <h3>Step 2 粒の並べ方を数えて、エントロピーを求める</h3>
+      <p>この「気体っぽさ」を、エントロピーの言葉で確かめてみる。溶液の体積を \(V\) とし、それを分子1個ぶんの大きさ \(v\) の小部屋に区切って考える。小部屋の数は \(V/v\) 個。溶質の粒 \(N\) 個をこの小部屋に入れる入れ方の数 \(W\) は、粒が十分まばらなら、1個あたり \(V/v\) 通りずつ選べるので、</p>
+      $$W \propto \left(\frac{V}{v}\right)^{N}$$
+      <p>(厳密には、同じ粒どうしを入れ替えても区別できないので \(N!\) で割るが、いまは \(V\) への依存のしかただけが大事なので気にしなくてよい。)ボルツマンの式 \(S = k_B \ln W\) に入れると、</p>
+      $$S = N k_B \ln V + (\,V\text{ によらない定数}\,)$$
+      <p>モル数 \(n\) を使えば \(N k_B = nR\) なので、\(S = nR\ln V + \text{定数}\)。これは、理想気体を等温で膨張させたときのエントロピーと同じ形だ。つまり溶質の粒は、エントロピーの意味でも気体そっくりにふるまっている。</p>
+
+      <div class="callout">
+        直感的に言えば、粒は「広い空間に散らばっている方が、並べ方の数が多い」。水が濃い側へ流れ込むと、溶質の粒が使える体積 \(V\) が広がり、エントロピーが増える。<strong>浸透とは、溶質の粒が自分の居場所を広げようとする、エントロピーの増大そのもの</strong>なのだ。
+      </div>
+
+      <h3>Step 3 膜をピストンとみなして、浸透圧を求める</h3>
+      <p>では、粒が「広がろうとする力」はどれくらい強いのか。半透膜をピストンのように動かせる壁だと考え、溶液側の体積を \(V\) から \(V + dV\) にほんの少し広げる(=純水が膜を通って溶液側に \(dV\) だけ入る)ことを考える。</p>
+      <p>このとき溶質のエントロピーは、Step 2 の式を \(V\) で微分して、</p>
+      $$dS = nR\,\frac{dV}{V}$$
+      <p>だけ増える。温度 \(T\) 一定の過程では、エントロピーが \(dS\) 増えるとき、系は外に \(T\,dS\) だけの仕事をすることができる(等温の理想気体が膨張して仕事をするのと同じ理屈だ)。一方、膜を圧力 \(\pi\) に逆らって \(dV\) だけ押し出す仕事は \(\pi\,dV\)。この二つを等しいとおくと、</p>
+      $$\pi\,dV = T\,dS = nRT\,\frac{dV}{V}$$
+      <p>両辺の \(dV\) を消して、</p>
+      $$\boxed{\;\pi = \frac{n}{V}\,RT = c\,RT\;}$$
+      <p>これがファントホッフの式だ。理想気体の状態方程式 \(pV = nRT\) と<strong>まったく同じ形</strong>になっているのは偶然ではない。溶質の粒が「水の中の気体」としてふるまっているからこそ、同じ式が出てくる。</p>
+      <p>なお、より正確には「化学ポテンシャル」を使って導くのが標準的なやり方で、大学2〜3年の熱力学・物理化学で習う。そこでも、薄い溶液の極限では同じ \(\pi = cRT\) が得られる。</p>
+
+      <h3>Step 4 塩は「2倍」効く ── 粒の数で決まる</h3>
+      <p>この導出で大事だったのは、溶質の<strong>粒の数</strong>だけで、粒の種類や大きさは一度も出てこなかった。食塩 NaCl は水に溶けると Na⁺ と Cl⁻ の2つのイオンに分かれるので、1 mol の食塩は 2 mol 分の粒として効く。そのため、</p>
+      $$\pi = i\,c\,RT,\qquad i \approx 2\ (\text{NaCl の場合})$$
+      <p>と書く(\(i\) をファントホッフ係数という。実際にはイオンどうしが少し引き合うので、2より少し小さくなる)。同じモル数なら、砂糖よりも塩の方が強く水を引き出せる理由のひとつがこれだ。</p>
+
+      <h3>Step 5 数字を入れてみる</h3>
+      <p>室温 \(T = 298\) K、\(R = 8.31\) J/(mol·K) として、それぞれの浸透圧を計算してみる。濃度は mol/L を mol/m³ に直す(1 mol/L = 1000 mol/m³)のを忘れずに。</p>
+      <ul>
+        <li><strong>野菜の細胞の中身</strong>:溶けている粒の濃度をおよそ 0.3 mol/L とすると、
+          $$\pi = 300 \times 8.31 \times 298 \approx 7.4\times10^{5}\ \text{Pa} \approx 0.74\ \text{MPa}$$
+          これはおよそ 7 気圧。タイヤの空気圧の2〜3倍にあたる。</li>
+        <li><strong>2% の食塩水</strong>(約 0.34 mol/L、\(i = 2\)):
+          $$\pi = 2 \times 340 \times 8.31 \times 298 \approx 1.7\ \text{MPa}$$
+          すでに細胞の中身を上回っている。</li>
+        <li><strong>飽和に近い食塩水</strong>(約 5.4 mol/L):理想溶液の式をそのまま当てはめると、約 27 MPa(270 気圧)。これほど濃いと式の精度は落ちるが、桁としては細胞の中身の数十倍になる。</li>
+      </ul>
+      <p>キュウリに直接塩を振ると、表面のわずかな水分に塩が溶けて、飽和に近い濃い塩水の膜ができる。細胞の中身とのあいだには、桁違いの浸透圧の差が生まれるわけだ。</p>
+
+      <div class="diagram">
+        <svg viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg">
+          <line x1="100" y1="150" x2="540" y2="150" style="stroke:var(--color-line)" stroke-width="2"/>
+          <g style="stroke:var(--color-line)" stroke-width="2">
+            <line x1="100" y1="144" x2="100" y2="156"/>
+            <line x1="246.7" y1="144" x2="246.7" y2="156"/>
+            <line x1="393.3" y1="144" x2="393.3" y2="156"/>
+            <line x1="540" y1="144" x2="540" y2="156"/>
+          </g>
+          <g font-size="11" text-anchor="middle" style="fill:var(--color-ink-soft)">
+            <text x="100" y="172">0.1</text>
+            <text x="246.7" y="172">1</text>
+            <text x="393.3" y="172">10</text>
+            <text x="540" y="172">100 MPa</text>
+          </g>
+
+          <line x1="227.5" y1="150" x2="227.5" y2="112" style="stroke:var(--color-ink-soft)" stroke-width="1"/>
+          <circle cx="227.5" cy="150" r="6" style="fill:var(--color-accent-soft)"/>
+          <text x="227.5" y="104" font-size="12" text-anchor="middle" style="fill:var(--color-ink)">細胞の中身</text>
+          <text x="227.5" y="89" font-size="11" text-anchor="middle" style="fill:var(--color-ink-soft)">0.74 MPa</text>
+
+          <line x1="280.5" y1="150" x2="280.5" y2="62" style="stroke:var(--color-ink-soft)" stroke-width="1"/>
+          <circle cx="280.5" cy="150" r="6" style="fill:var(--color-accent)" opacity="0.7"/>
+          <text x="280.5" y="54" font-size="12" text-anchor="middle" style="fill:var(--color-ink)">2% 食塩水</text>
+          <text x="280.5" y="39" font-size="11" text-anchor="middle" style="fill:var(--color-ink-soft)">1.7 MPa</text>
+
+          <line x1="456.5" y1="150" x2="456.5" y2="112" style="stroke:var(--color-ink-soft)" stroke-width="1"/>
+          <circle cx="456.5" cy="150" r="6" style="fill:var(--color-accent)"/>
+          <text x="456.5" y="104" font-size="12" text-anchor="middle" style="fill:var(--color-ink)">飽和食塩水(理想近似)</text>
+          <text x="456.5" y="89" font-size="11" text-anchor="middle" style="fill:var(--color-ink-soft)">約 27 MPa</text>
+        </svg>
+        <div class="caption">浸透圧の比較(対数目盛、25℃、π = icRT で計算)。目盛り1つで10倍になる。</div>
+      </div>
+
+      <h3>Step 6 しなびる・パリッと戻る ── 細胞壁と膨圧</h3>
+      <p>植物の細胞には、膜の外側に丈夫な<strong>細胞壁</strong>がある。新鮮なキュウリの細胞は、中に水をたっぷり吸い込んで、細胞壁を内側から押し広げている。この押す圧力を<strong>膨圧</strong>という。真水の中で水が入ってこなくなるのは、膨圧が細胞の中身の浸透圧(約 0.7 MPa)と釣り合ったときだ。キュウリの「パリッ」とした歯ごたえは、この数気圧の内圧でパンパンに張った細胞が、噛んだ瞬間にはじけることで生まれる。</p>
+      <p>塩を振ると外側の浸透圧の方が大きくなり、水は外へ出ていく。膨圧が下がって細胞がしぼみ、キュウリはしんなりする。逆に、しなびた野菜を真水に浸すと、外の浸透圧はほぼ 0 なので、膨圧が元に戻るまで水が入り直す。「パリッと戻る」のはこのためだ。</p>
+
+      <h3>Step 7 塩もみは何分待てばいいか ── 拡散の時間</h3>
+      <p>最後に、時間の見積もりをしておく。表面で起きた濃度差が、キュウリの内側まで伝わるには時間がかかる。粒がでたらめに動いて広がる現象(拡散)では、時間 \(t\) のあいだに粒が広がる距離 \(\ell\) は</p>
+      $$\ell \sim \sqrt{D\,t}\qquad\Longleftrightarrow\qquad t \sim \frac{\ell^2}{D}$$
+      <p>となる。\(D\) は拡散係数(m²/s)で、水中の食塩ならおよそ \(1.5\times10^{-9}\) m²/s。\(D\) と \(\ell\) から時間をつくる組み合わせはこれしかないので、単位を見るだけでこの形がわかる。<a href="sous-vide-heat.html">低温調理の記事</a>で出てきた「火が通る時間は厚さの2乗」とまったく同じ構造だ(熱の広がりも、粒の広がりも、同じ形の方程式に従う)。</p>
+
+      <div class="table-wrap">
+        <table class="data">
+          <tr><th>切り方</th><th>塩が届く深さ ℓ</th><th>時間の目安 ℓ²/D</th></tr>
+          <tr><td>薄切り(厚さ 1 mm、両面から)</td><td>0.5 mm</td><td>約 3 分</td></tr>
+          <tr><td>やや厚め(厚さ 3 mm)</td><td>1.5 mm</td><td>約 25 分</td></tr>
+          <tr><td>丸ごと1本(半径 1.5 cm)</td><td>15 mm</td><td>約 2 日</td></tr>
+        </table>
+      </div>
+      <p>薄切りの塩もみが「数分」で済み、丸ごとの漬物には「一晩〜数日」かかるという台所の経験則が、桁としてきれいに再現される(実際の野菜の中では拡散はもう少し遅く、細胞膜を水が通る速さも効いてくるので、あくまで目安だ)。厚さが3倍になると時間は9倍。早く水を出したければ、塩を増やすより薄く切る方がずっと効く。</p>
+    </section>
+
+    <p>濃度の高い方と低い方が均されていくこの動きは、見方を変えれば、偏りがならされ均一に近づこうとする、エントロピー増大の流れそのものでもある。キュウリの表面ににじむ一滴の水は、濃度差という小さな「偏り」が解消されていく、ごくありふれた物理の現場なのだ。</p>
+
+    <h3>参考</h3>
+    <ul class="refs">
+      <li>P. Atkins, J. de Paula, <em>Atkins' Physical Chemistry</em>, Oxford University Press(浸透圧と化学ポテンシャル)</li>
+      <li>L. Taiz, E. Zeiger ほか, <em>Plant Physiology and Development</em>, Sinauer(植物細胞の水ポテンシャルと膨圧)</li>
+    </ul>
 
     <a class="back-link" href="../index.html">&larr; Home に戻る</a>
   </div>
