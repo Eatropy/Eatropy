@@ -22,6 +22,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Inter:wght@400;500;600&family=Noto+Serif+JP:wght@500;600&family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
+<script defer src="js/recipes.js"></script>
+<script defer src="js/kitchen.js"></script>
 </head>
 <body>
 
@@ -41,6 +43,43 @@
   <div class="wrap">
     <h1>今日のごはんを、少しだけ丁寧に。</h1>
     <p>キッチンで感じたちょっとした疑問や発見を、自分の言葉でゆっくり書き留めていく場所です。難しい話より、まずは美味しいものから。</p>
+  </div>
+</section>
+
+<section class="kitchen" id="kitchen">
+  <div class="wrap">
+    <h2>Kitchen</h2>
+    <p class="kitchen-lead">手元にある材料を入れてください。フランス料理とイタリア料理から使えるレシピを探し、ぴったりのものがなくても、その場で一皿を組み立てます。</p>
+
+    <form class="kitchen-form" autocomplete="off">
+      <label class="visually-hidden" for="kitchen-input">材料</label>
+      <input id="kitchen-input" type="text" placeholder="例:鶏肉、トマト、にんにく" enterkeyhint="done">
+      <button type="submit">追加</button>
+    </form>
+
+    <div class="kitchen-suggest" aria-label="よく使う材料">
+      <button type="button" data-ing="卵">卵</button>
+      <button type="button" data-ing="トマト">トマト</button>
+      <button type="button" data-ing="鶏肉">鶏肉</button>
+      <button type="button" data-ing="じゃがいも">じゃがいも</button>
+      <button type="button" data-ing="きのこ">きのこ</button>
+      <button type="button" data-ing="玉ねぎ">玉ねぎ</button>
+      <button type="button" data-ing="パスタ">パスタ</button>
+      <button type="button" data-ing="鮭">鮭</button>
+      <button type="button" data-ing="生クリーム">生クリーム</button>
+    </div>
+
+    <div class="kitchen-chips" aria-live="polite"></div>
+
+    <div class="kitchen-filter" role="radiogroup" aria-label="料理のジャンル">
+      <label><input type="radio" name="cuisine" value="all" checked><span>すべて</span></label>
+      <label><input type="radio" name="cuisine" value="fr"><span>フレンチ</span></label>
+      <label><input type="radio" name="cuisine" value="it"><span>イタリアン</span></label>
+      <button type="button" class="kitchen-clear" hidden>材料をすべて外す</button>
+    </div>
+
+    <div class="kitchen-results" aria-live="polite"></div>
+    <noscript><p class="kitchen-empty">この機能を使うには JavaScript を有効にしてください。</p></noscript>
   </div>
 </section>
 
