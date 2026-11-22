@@ -427,6 +427,13 @@ article.content .refs li { margin: 0.3em 0; }
   padding: 8px 6px;
 }
 
+.kitchen-note {
+  font-size: 0.75rem;
+  color: var(--color-ink-soft);
+  margin: 8px auto 0;
+  max-width: 440px;
+}
+
 .kitchen-suggest {
   display: flex;
   flex-wrap: wrap;
@@ -471,6 +478,8 @@ article.content .refs li { margin: 0.3em 0; }
 }
 
 .chip.is-unknown { border-style: dashed; }
+.chip.is-checking { opacity: 0.6; }
+.chip.is-wiki { border-color: var(--color-accent-soft); }
 .chip.is-pantry { color: var(--color-ink-soft); }
 
 .chip-x {

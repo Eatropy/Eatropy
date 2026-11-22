@@ -51,6 +51,125 @@
     return "other";
   }
 
+  /* ========== 辞書にない材料を Wikipedia で調べる ========== */
+
+  // 動的に追加した材料の分類(魚介の下ごしらえの違いなど)
+  var SUB = {};
+  ["herb", "other"].forEach(function (c) { if (!K.category[c]) K.category[c] = []; });
+
+  // カテゴリ名から材料の種類を決める。上から順に判定する。
+  var RULES = [
+    [/^パスタ$/, { key: "パスタ" }],
+    [/チーズ/, { key: "チーズ" }],
+    [/キノコ|きのこ|菌類/, { key: "きのこ" }],
+    [/ソーセージ|^ハム$|ベーコン|食肉加工品|加工肉/, { cat: "cured" }],
+    [/^(動物別の)?食肉$|食用内臓|^牛肉$|^豚肉$|^鶏肉$|^羊肉$|ジビエ/, { cat: "meat" }],
+    [/^卵$/, { key: "卵" }],
+    [/^イカ$|^タコ$|頭足/, { key: "イカ" }],
+    [/食用甲殻類|^エビ$|^カニ$/, { cat: "seafood", sub: "crust" }],
+    [/食用貝|二枚貝|巻貝/, { cat: "seafood", sub: "shell" }],
+    [/^白身魚$/, { key: "白身魚" }],
+    [/赤身魚|青魚|青物/, { key: "青魚" }],
+    [/魚$|魚類/, { cat: "seafood", sub: "fish" }],
+    [/^水産物$|寿司種/, { cat: "seafood", sub: "other" }],
+    [/果物|果樹|果実|ベリー|柑橘/, { cat: "fruit" }],
+    [/豆類|^マメ$/, { key: "豆" }],
+    [/ハーブ|香辛料|香草/, { cat: "herb" }],
+    [/野菜|葉菜|根菜|果菜|スプラウト|^イモ|芋/, { cat: "veg" }],
+    [/調味料|発酵食品|水産加工品|菓子|飲料|^茶|酒$|乳製品|小麦加工品|麺|穀物|豆腐/, { cat: "other" }]
+  ];
+  var CAT_LABEL = { meat: "肉", cured: "加工肉", seafood: "魚介", veg: "野菜", fruit: "果物", herb: "ハーブ・香辛料", other: "その他" };
+
+  function classify(cats) {
+    if (cats.some(function (c) { return /曖昧さ回避/.test(c); })) return null;
+    for (var i = 0; i < RULES.length; i++) {
+      for (var j = 0; j < cats.length; j++) {
+        if (RULES[i][0].test(cats[j])) return RULES[i][1];
+      }
+    }
+    return null;
+  }
+
+  var WP_CACHE_KEY = "eatropy-kitchen-wp-v1";
+  var wpCache = {};
+  try { wpCache = JSON.parse(localStorage.getItem(WP_CACHE_KEY) || "{}") || {}; } catch (e) { wpCache = {}; }
+  function saveCache() {
+    try { localStorage.setItem(WP_CACHE_KEY, JSON.stringify(wpCache)); } catch (e) { /* 保存できなくても動く */ }
+  }
+
+  function wpQuery(params) {
+    return wpQueryOnce(params).catch(function () {
+      return new Promise(function (r) { setTimeout(r, 1500); }).then(function () { return wpQueryOnce(params); });
+    });
+  }
+  function wpQueryOnce(params) {
+    var base = {
+      action: "query", format: "json", origin: "*", prop: "categories",
+      cllimit: "max", clshow: "!hidden"
+    };
+    Object.keys(params).forEach(function (k) { base[k] = params[k]; });
+    var qs = Object.keys(base).map(function (k) { return k + "=" + encodeURIComponent(base[k]); }).join("&");
+    var ctrl = typeof AbortController !== "undefined" ? new AbortController() : null;
+    var timer = ctrl ? setTimeout(function () { ctrl.abort(); }, 8000) : null;
+    return fetch("https://ja.wikipedia.org/w/api.php?" + qs, ctrl ? { signal: ctrl.signal } : {})
+      .then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
+      .then(function (d) {
+        if (timer) clearTimeout(timer);
+        var pages = (d.query && d.query.pages) ? Object.keys(d.query.pages).map(function (k) { return d.query.pages[k]; }) : [];
+        pages.sort(function (a, b) { return (a.index || 0) - (b.index || 0); });
+        return pages.map(function (p) {
+          return { title: p.title, missing: "missing" in p, cats: (p.categories || []).map(function (c) { return c.title.replace(/^Category:/, ""); }) };
+        });
+      });
+  }
+
+  // 結果:{ key } 既存の材料に対応 / { cat, sub } 新しい材料として扱う / null 判定できない
+  var queue = Promise.resolve();
+  function lookup(word) {
+    var job = queue.then(function () { return lookupNow(word); });
+    queue = job.then(function () {}, function () {});
+    return job;
+  }
+  function lookupNow(word) {
+    var n = norm(word);
+    if (Object.prototype.hasOwnProperty.call(wpCache, n)) return Promise.resolve(wpCache[n]);
+    return wpQuery({ titles: word, redirects: 1 })
+      .then(function (pages) {
+        var p = pages[0];
+        var hit = p && !p.missing ? classify(p.cats) : null;
+        if (hit) return Object.assign({ title: p.title }, hit);
+        // 見出し語が見つからなければ全文検索の上位から、料理名ではなく食材のページを探す
+        return wpQuery({ generator: "search", gsrsearch: word, gsrlimit: 3 }).then(function (res) {
+          for (var i = 0; i < res.length; i++) {
+            if (res[i].cats.some(function (c) { return /料理|グルメ|番組|ゲーム|企業/.test(c); })) continue;
+            var h = classify(res[i].cats);
+            if (h) return Object.assign({ title: res[i].title }, h);
+          }
+          return null;
+        });
+      })
+      .then(function (result) { wpCache[n] = result; saveCache(); return result; })
+      .catch(function () { return undefined; }); // 通信エラー:キャッシュしない
+  }
+
+  // 判定結果を材料に反映する
+  function applyLookup(it, result) {
+    it.checking = false;
+    if (!result) { it.failed = result === undefined ? "network" : "notfound"; return; }
+    it.source = result.title;
+    if (result.key) {
+      it.key = result.key;
+      it.exact = true;
+      return;
+    }
+    var k = it.raw;
+    if (K.category[result.cat].indexOf(k) === -1) K.category[result.cat].push(k);
+    if (result.sub) SUB[k] = result.sub;
+    it.key = k;
+    it.exact = false;
+    it.wikiCat = result.cat;
+  }
+
   function joinJa(list) {
     if (list.length === 0) return "";
     if (list.length === 1) return list[0];
@@ -135,7 +254,7 @@
       if (it.pantry || !it.key) return;   // 辞書にない材料は使わない
       if (keys.indexOf(it.key) !== -1) return;
       keys.push(it.key);
-      if (it.exact && LABEL_CATS.indexOf(catOf(it.key)) !== -1 && it.key !== "トマト") labels[it.key] = it.raw;
+      if (it.exact && (LABEL_CATS.indexOf(catOf(it.key)) !== -1 || it.key === "パスタ" || it.key === "チーズ") && it.key !== "トマト") labels[it.key] = it.raw;
     });
     // 料理の軸になる材料が1つもなければ組み立てない
     var base = keys.filter(function (k) {
@@ -159,7 +278,8 @@
     var garlic = has("にんにく"), chili = has("唐辛子");
     var cream = has("生クリーム") ? "生クリーム" : (has("牛乳") ? "牛乳" : null);
     var cheese = has("チーズ") ? "チーズ" : (has("モッツァレラ") ? "モッツァレラ" : null);
-    var herbs = ["バジル", "パセリ", "ハーブ", "レモン", "ケッパー", "オリーブ", "アンチョビ", "ナッツ"].filter(has);
+    var herbs = ["バジル", "パセリ", "ハーブ", "レモン", "ケッパー", "オリーブ", "アンチョビ", "ナッツ"].filter(has).concat(ofCat("herb"));
+    var isClam = function (p) { return p === "あさり" || SUB[p] === "shell"; };
     var steps = [], name, original, physics, link = null, time;
 
     function vegsExcept(ex) {
@@ -173,6 +293,9 @@
     function proteinPrep(p) {
       if (p === "ツナ") return "ツナは油を軽く切っておく。";
       if (p === "あさり") return "あさりは砂抜きし、殻をこすり洗いする。";
+      if (SUB[p] === "shell") return p + "は殻をよく洗い、必要なら砂抜きする。";
+      if (SUB[p] === "crust") return p + "は殻や背わたなど食べない部分を取り除き、水気をふく。";
+      if (SUB[p] === "other") return p + "は水気を軽く切っておく。";
       if (p === "エビ") return "エビは殻と背わたを取り、軽く塩をふって水気をふく。";
       if (p === "牡蠣") return "牡蠣は塩水でやさしく洗い、水気をしっかりふく。";
       if (p === "カニ") return "カニの身をほぐしておく。";
@@ -234,7 +357,7 @@
         if (vs.length) steps.push(joinJa(useAll(vs)) + "は食べやすい大きさに切る。");
         steps.push(aromatics("オリーブオイル"));
         if (C) steps.push(use(C) + "を加え、脂が出るまで炒める。");
-        if (P === "あさり") steps.push("あさりと水大さじ3" + (has("白ワイン") ? "(または" + use("白ワイン") + ")" : "") + "を加え、ふたをして殻が開くまで蒸し煮にする。");
+        if (isClam(P)) steps.push(P + "と水大さじ3" + (has("白ワイン") ? "(または" + use("白ワイン") + ")" : "") + "を加え、ふたをして殻が開くまで蒸し煮にする。");
         else if (P && catOf(P) === "seafood" && P !== "ツナ") steps.push(P + "を加え、色が変わる程度にさっと火を通す。");
         else if (P && P !== "ツナ") steps.push(P + "を加えて中火で炒め、" + doneness(P));
         if (vs.length) steps.push(joinJa(vs) + "を加えて炒める。");
@@ -276,17 +399,19 @@
           steps.push("すべてを器に盛り、ドレッシングをかける。" + finishLine());
           physics = PH.dressing;
         } else {
-          var av = vegsAll.slice();
-          var aqua = has("トマト") || P === "あさり" || P === "白身魚" || has("あさり");
+          var av = vegsAll.concat(has("じゃがいも") ? ["じゃがいも"] : []);
+          var aqua = has("トマト") || isClam(P) || P === "白身魚" || has("あさり");
           if (aqua) {
             name = P + (has("あさり") && P !== "あさり" ? "とあさり" : "") + "のアクアパッツァ風";
+            var clamOnly = isClam(P) && P !== "あさり";
             original = "All'acqua pazza"; time = "25分";
             steps.push(proteinPrep(P));
             if (av.length) steps.push(joinJa(useAll(av)) + "を食べやすい大きさに切る。");
             steps.push(aromatics("オリーブオイル大さじ2"));
-            if (P !== "あさり") steps.push(P + "を入れ、" + (P === "白身魚" || P === "鮭" || P === "青魚" ? "皮目から" : "") + "中火で焼き色をつける。");
+            if (!isClam(P)) steps.push(P + "を入れ、" + (P === "白身魚" || P === "鮭" || P === "青魚" ? "皮目から" : "") + "中火で焼き色をつける。");
             var liquids = [];
             if (has("あさり")) liquids.push(use("あさり"));
+            if (clamOnly) liquids.unshift(P);
             if (av.length) liquids.push(joinJa(av));
             liquids.push((has("白ワイン") ? use("白ワイン") + "50mlと" : "") + "水150ml");
             steps.push(liquids.join("、") + "を加え、ふたをして中火で5〜6分煮る。");
@@ -305,7 +430,7 @@
         }
       } else if (P) {
         use(P);
-        var mv = vegsExcept(["トマト"]);
+        var mv = vegsExcept(["トマト"]).concat(has("じゃがいも") ? ["じゃがいも"] : []);
         if (P === "ひき肉") {
           name = has("トマト") ? "ポルペッテ(ミートボール)のトマト煮" : "ポルペッテ(ミートボール)のソテー";
         } else if (P === "牛肉" && !has("トマト")) {
@@ -395,7 +520,7 @@
       /* ---------- Français ---------- */
       if (P && catOf(P) === "meat") {
         use(P);
-        var gar = vegsAll.slice();
+        var gar = vegsAll.concat(has("じゃがいも") ? ["じゃがいも"] : []);
         var sauceName, liquid;
         if (has("赤ワイン")) { sauceName = "赤ワインソース"; liquid = use("赤ワイン") + "150ml"; }
         else if (has("マスタード")) { sauceName = "マスタードソース"; liquid = (has("白ワイン") ? use("白ワイン") + "50ml" : "水50ml"); }
@@ -428,7 +553,7 @@
         if (P === "牛肉" || P === "ラム") link = L.sous;
       } else if (P && catOf(P) === "seafood") {
         use(P);
-        var sv = vegsAll.slice();
+        var sv = vegsAll.concat(has("じゃがいも") && P !== "ツナ" ? ["じゃがいも"] : []);
         if (P === "ツナ") {
           name = "ツナ" + (sv.length ? "と" + subjects(sv, "") : "") + "のサラダ、ヴィネグレット";
           original = "Salade composée"; time = "15分";
@@ -440,13 +565,13 @@
           steps.push("酢大さじ1、" + (has("マスタード") ? use("マスタード") : "あればマスタード") + "小さじ1/2、塩・こしょうを混ぜ、オリーブオイル大さじ3を少しずつ加えながらよく混ぜる(ヴィネグレット)。");
           steps.push("野菜とツナを器に盛り、ヴィネグレットをかける。" + finishLine());
           physics = PH.dressing;
-        } else if (P === "あさり") {
-          name = "あさり" + (sv.length ? "と" + subjects(sv, "") : "") + "の白ワイン蒸し";
+        } else if (isClam(P)) {
+          name = P + (sv.length ? "と" + subjects(sv, "") : "") + "の白ワイン蒸し";
           original = "À la marinière"; time = "15分";
           steps.push(proteinPrep(P));
           var cl = (garlic ? [use("にんにく")] : []).concat(useAll(sv));
           if (cl.length) steps.push("鍋に" + (has("バター") ? use("バター") : "オリーブオイル") + "を入れ、" + joinJa(cl) + "を炒める。");
-          steps.push((cl.length ? "" : "鍋に") + "あさりと" + (has("白ワイン") ? use("白ワイン") + "100ml" : "水100ml") + (cl.length ? "" : "、" + (has("バター") ? use("バター") : "オリーブオイル") + "少々") + "を入れ、ふたをして強火で2〜3分蒸し煮にする。" + (cream ? use(cream) + "を少し加えるとまろやかになる。" : ""));
+          steps.push((cl.length ? "" : "鍋に") + P + "と" + (has("白ワイン") ? use("白ワイン") + "100ml" : "水100ml") + (cl.length ? "" : "、" + (has("バター") ? use("バター") : "オリーブオイル") + "少々") + "を入れ、ふたをして強火で2〜3分蒸し煮にする。" + (cream ? use(cream) + "を少し加えるとまろやかになる。" : ""));
           steps.push("殻が開いたらすぐに火を止める。" + finishLine());
           physics = PH.clam;
         } else {
@@ -579,7 +704,7 @@
     var amounts = [];
     keys.forEach(function (k) {
       if (!used[k]) return;
-      var q = QTY[k] || (catOf(k) === "veg" ? "100g前後" : "適量");
+      var q = QTY[k] || ({ veg: "100g前後", meat: "200〜250g", seafood: "150〜200g", cured: "50g", fruit: "1個", herb: "少々" }[catOf(k)] || "適量");
       amounts.push(k + " " + q);
     });
     if (used["小麦粉"] && !has("小麦粉")) amounts.push("小麦粉 少々");
@@ -609,7 +734,7 @@
   }
 
   // テスト・デバッグ用
-  K.api = { resolve: resolve, search: search, improvise: improvise };
+  K.api = { resolve: resolve, search: search, improvise: improvise, lookup: lookup, applyLookup: applyLookup };
 
   /* ========== 画面 ========== */
 
@@ -642,7 +767,17 @@
       var dup = items.some(function (it) {
         return (r.key && it.key === r.key) || norm(it.raw) === norm(r.raw);
       });
-      if (!dup) items.push(r);
+      if (!dup) {
+        items.push(r);
+        if (!r.pantry && !r.key) {
+          r.checking = true;
+          lookup(r.raw).then(function (result) {
+            applyLookup(r, result);
+            renderChips();
+            render();
+          });
+        }
+      }
     });
     renderChips();
     render();
@@ -651,12 +786,15 @@
   function renderChips() {
     chipsEl.textContent = "";
     items.forEach(function (it, i) {
-      var chip = el("span", "chip" + (it.pantry ? " is-pantry" : it.key ? "" : " is-unknown"));
+      var chip = el("span", "chip" + (it.pantry ? " is-pantry" : it.checking ? " is-checking" : it.key ? (it.source ? " is-wiki" : "") : " is-unknown"));
       var label = it.raw;
-      if (it.key && norm(it.key) !== norm(it.raw)) label += " → " + it.key;
+      if (it.checking) label += "(調べています…)";
+      else if (it.wikiCat) label += " → " + CAT_LABEL[it.wikiCat];
+      else if (it.key && norm(it.key) !== norm(it.raw)) label += " → " + it.key;
       chip.appendChild(el("span", null, label));
       if (it.pantry) chip.title = "調味料は家にあるものとして扱います";
-      else if (!it.key) chip.title = "辞書にない材料です。レシピには使いません";
+      else if (it.source) chip.title = "Wikipedia「" + it.source + "」をもとに種類を判定しました";
+      else if (!it.key && !it.checking) chip.title = it.failed === "network" ? "Wikipedia に接続できませんでした" : "種類を判定できなかった材料です";
       var x = el("button", "chip-x", "×");
       x.type = "button";
       x.setAttribute("aria-label", it.raw + " を外す");
@@ -722,10 +860,10 @@
     var keys = new Set(items.filter(function (it) { return it.key; }).map(function (it) { return it.key; }));
     var cuisine = cuisineValue();
 
-    var unknownItems = items.filter(function (it) { return !it.pantry && !it.key; });
+    var unknownItems = items.filter(function (it) { return !it.pantry && !it.key && !it.checking; });
     if (unknownItems.length) {
       var box = el("div", "kitchen-unknown");
-      box.appendChild(el("p", null, "「" + unknownItems.map(function (it) { return it.raw; }).join("」「") + "」は辞書にない材料なので、レシピには使っていません。ネットで調べることができます。"));
+      box.appendChild(el("p", null, "「" + unknownItems.map(function (it) { return it.raw; }).join("」「") + "」は種類を判定できなかったので、レシピには使っていません。ネットで調べることができます。"));
       unknownItems.forEach(function (it) {
         var row = el("p", "kitchen-search");
         [["fr", "フレンチ", "フランス料理"], ["it", "イタリアン", "イタリア料理"]].forEach(function (c) {
